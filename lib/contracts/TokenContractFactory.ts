@@ -20,17 +20,17 @@ import {
   TypedListener,
 } from "@/types";
 
-import metadata from "@/hardhat/artifacts/contracts/MyNFT.sol/MyNFT.json";
+import metadata from "@/hardhat/artifacts/contracts/MyToken.sol/MyToken.json";
 
-type NftContractConstructorParams =
+type TokenContractConstructorParams =
   | [signer?: Signer]
   | ConstructorParameters<typeof ContractFactory>;
 
 export const isSuperArgs = (
-  xs: NftContractConstructorParams
+  xs: TokenContractConstructorParams
 ): xs is ConstructorParameters<typeof ContractFactory> => xs.length > 1;
 
-export interface NftContractInterface extends Interface {}
+export interface TokenContractInterface extends Interface {}
 
 export interface MintedEventObject {
   tokenId: number;
@@ -41,12 +41,12 @@ export type MintedEvent = TypedEvent<[BigNumberish, string], MintedEventObject>;
 
 export type MintedEventFilter = TypedEventFilter<MintedEvent>;
 
-export interface NftContract extends BaseContract {
+export interface TokenContract extends BaseContract {
   connect(runner: ContractRunner): BaseContract;
   attach(addressOrName: string): BaseContract;
   deployed(): Promise<this>;
 
-  interface: NftContractInterface;
+  interface: TokenContractInterface;
 
   queryFilter(
     event: ContractEventName,
@@ -72,6 +72,22 @@ export interface NftContract extends BaseContract {
   ) => Promise<this>;
 
   functions: {
+    name(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<string>;
+
+    symbol(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<string>;
+
+    owner(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<string>;
+
+    decimals(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<number>;
+
     mint(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -79,11 +95,31 @@ export interface NftContract extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    ownerOf(
-      tokenId: BigNumberish,
+    balanceOf(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<string>;
+    ): Promise<BigNumberish>;
+
+    maxSupply(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumberish>;
   };
+
+  name(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<string>;
+
+  symbol(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<string>;
+
+  owner(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<string>;
+
+  decimals(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<number>;
 
   mint(
     to: PromiseOrValue<string>,
@@ -92,36 +128,40 @@ export interface NftContract extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransactionResponse>;
 
-  ownerOf(
-    tokenId: BigNumberish,
+  balanceOf(
+    owner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<string>;
+  ): Promise<BigNumberish>;
+
+  maxSupply(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<BigNumberish>;
 }
 
-export class NftContractFactory extends ContractFactory {
-  constructor(...args: NftContractConstructorParams) {
+export class TokenContractFactory extends ContractFactory {
+  constructor(...args: TokenContractConstructorParams) {
     if (isSuperArgs(args)) {
       super(...args);
     } else {
       super(metadata.abi, metadata.bytecode, args[0]);
     }
   }
-  override attach(address: string): NftContract {
-    return super.attach(address) as NftContract;
+  override attach(address: string): TokenContract {
+    return super.attach(address) as TokenContract;
   }
-  override connect(signer: Signer): NftContractFactory {
-    return super.connect(signer) as NftContractFactory;
+  override connect(signer: Signer): TokenContractFactory {
+    return super.connect(signer) as TokenContractFactory;
   }
   static readonly bytecode = metadata.bytecode;
   static readonly abi = metadata.abi;
-  static createInterface(): NftContractInterface {
-    return new Interface(metadata.abi) as NftContractInterface;
+  static createInterface(): TokenContractInterface {
+    return new Interface(metadata.abi) as TokenContractInterface;
   }
-  static connect(address: string, signerOrProvider: Signer): NftContract {
+  static connect(address: string, signerOrProvider: Signer): TokenContract {
     return new BaseContract(
       address,
       metadata.abi,
       signerOrProvider
-    ) as NftContract;
+    ) as TokenContract;
   }
 }
