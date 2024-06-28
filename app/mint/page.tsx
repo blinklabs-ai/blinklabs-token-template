@@ -2,20 +2,21 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import config from "@/uiconfig.json";
-import TokenInfo from "./components/TokenInfo";
+import TokenInfo from "./components/TokenInfo/TokenInfo";
 import TokenTabs from "./components/TokenTabs";
 import ButtonTray from "./components/ButtonTray";
+
+import config from "@/uiconfig.json";
 
 const MintPage = () => {
   const { project } = config;
   const { name, description, logoUrl, bannerUrl, media } = project;
 
   return (
-    <div className="bg-black text-white">
+    <div>
       <div className="relative">
         <div className="w-full h-[360px] relative">
-          <Image src={bannerUrl} alt="banner" fill objectFit="cover" />
+          <Image src={bannerUrl} alt="banner" fill object-fit="cover" />
         </div>
         <div className="w-full px-4 flex items-end justify-between absolute -bottom-[50px]">
           <Image

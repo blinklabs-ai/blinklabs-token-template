@@ -18,6 +18,8 @@ export interface TypedListener<TEvent extends TypedEvent> {
 
 export type PromiseOrValue<T> = T | Promise<T>;
 
+export type Address = `0x${string}`;
+
 export interface Nft {
   id: number;
   tokenId: number;

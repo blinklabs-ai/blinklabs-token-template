@@ -35,7 +35,7 @@ const ChainButton = () => {
 
   return (
     <Button
-      className="flex gap-2 items-center px-4 py-2 rounded-md"
+      className="bg-primary text-white flex gap-2 items-center px-4 py-2 rounded-md"
       onClick={onSwitchChain}
     >
       {currentChainId === config.chain.id ? (

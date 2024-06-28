@@ -1,13 +1,16 @@
 import { ethers } from "ethers";
 import { readContract } from "@wagmi/core";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 import { TokenContractFactory } from "@/lib/contracts/TokenContractFactory";
 
+import { Address } from "@/types";
 import { wagmiConfig } from "@/configs/wagmi";
 import { LIBS } from "@/constants/common";
 import config from "@/uiconfig.json";
 import { QUERY_KEYS } from "@/constants/queryKeys";
+
+const queryClient = new QueryClient();
 
 export default () => {
   const contractAddress = config.contractAddress as `0x${string}`;
@@ -37,6 +40,23 @@ export default () => {
         return symbol;
       } catch (error) {
         return "";
+      }
+    };
+
+    const balanceOfFn = async ({
+      walletAddress,
+    }: {
+      walletAddress: Address;
+    }) => {
+      try {
+        const signer = await new ethers.BrowserProvider(
+          window.ethereum
+        ).getSigner();
+        const contract = TokenContractFactory.connect(contractAddress, signer);
+        const balance = await contract.balanceOf(walletAddress);
+        return balance;
+      } catch (error) {
+        return 0;
       }
     };
 
@@ -79,6 +99,19 @@ export default () => {
       }
     };
 
+    const mintFn = async ({ to, amount }: { to: string; amount: number }) => {
+      try {
+        const signer = await new ethers.BrowserProvider(
+          window.ethereum
+        ).getSigner();
+        const contract = TokenContractFactory.connect(contractAddress, signer);
+        const tx = await contract.mint(to, amount);
+        await tx.wait();
+      } catch (error) {
+        console.log({ error });
+      }
+    };
+
     const { data: name, isLoading: isLoadingName } = useQuery({
       queryKey: [QUERY_KEYS.NAME],
       queryFn: nameFn,
@@ -104,6 +137,20 @@ export default () => {
       queryFn: decimalsFn,
     });
 
+    const balanceOf = (walletAddress: Address) =>
+      useQuery({
+        queryKey: [QUERY_KEYS.BALANCE],
+        queryFn: () => balanceOfFn({ walletAddress }),
+      });
+
+    const mint = useMutation({
+      mutationFn: mintFn,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.BALANCE] });
+      },
+      onError: () => {},
+    });
+
     const loading =
       isLoadingTokenSupply ||
       isLoadingName ||
@@ -115,9 +162,10 @@ export default () => {
       loading,
       name,
       symbol,
-      owner,
+      owner: owner ? owner : "",
       tokenSupply: tokenSupply ? tokenSupply.toString(10) : 0,
       decimals: decimals ? decimals : 0,
+      balanceOf,
     };
   };
 
@@ -187,6 +235,20 @@ export default () => {
       }
     };
 
+    const balanceOfFn = async ({}) => {
+      try {
+        const balance = await readContract(wagmiConfig, {
+          abi,
+          address: contractAddress,
+          functionName: "balanceOf",
+        });
+        if (!balance) return "0";
+        return balance.toString();
+      } catch (error) {
+        return 0;
+      }
+    };
+
     const { data: name, isLoading: isLoadingName } = useQuery({
       queryKey: [QUERY_KEYS.NAME],
       queryFn: nameFn,
@@ -212,6 +274,12 @@ export default () => {
       queryFn: decimalsFn,
     });
 
+    const balanceOf = (walletAddress: Address) =>
+      useQuery({
+        queryKey: [QUERY_KEYS.BALANCE],
+        queryFn: () => balanceOfFn({ walletAddress }),
+      });
+
     const loading =
       isLoadingTokenSupply ||
       isLoadingName ||
@@ -223,9 +291,10 @@ export default () => {
       loading,
       name,
       symbol,
-      owner,
+      owner: owner ? owner : "",
       tokenSupply: tokenSupply ? tokenSupply.toString(10) : 0,
       decimals: decimals ? decimals : 0,
+      balanceOf,
     };
   };
 

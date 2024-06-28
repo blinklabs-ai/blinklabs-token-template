@@ -90,8 +90,7 @@ export interface TokenContract extends BaseContract {
 
     mint(
       to: PromiseOrValue<string>,
-      tokenId: PromiseOrValue<BigNumberish>,
-      tokenURI: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -123,8 +122,7 @@ export interface TokenContract extends BaseContract {
 
   mint(
     to: PromiseOrValue<string>,
-    tokenId: PromiseOrValue<BigNumberish>,
-    tokenURI: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransactionResponse>;
 

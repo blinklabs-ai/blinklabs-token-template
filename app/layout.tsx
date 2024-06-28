@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
+import clsx from "clsx";
 
 import { Providers } from "@/app/providers";
 import Header from "@/components/Header";
 
-const inter = Inter({ subsets: ["latin"] });
+const satoshiFont = localFont({
+  src: [
+    { path: "../styles/fonts/Satoshi/Satoshi-Regular.otf", weight: "400" },
+    { path: "../styles/fonts/Satoshi/Satoshi-Italic.otf", weight: "400" },
+    { path: "../styles/fonts/Satoshi/Satoshi-Light.otf", weight: "300" },
+    { path: "../styles/fonts/Satoshi/Satoshi-Medium.otf", weight: "500" },
+    { path: "../styles/fonts/Satoshi/Satoshi-Bold.otf", weight: "700" },
+  ],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,12 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={inter.className}>
+      <body className={clsx("bg-background-page-body", satoshiFont.className)}>
+        <Providers>
           <Header />
           {children}
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }

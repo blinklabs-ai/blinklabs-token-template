@@ -37,7 +37,9 @@ const WagmiConnectWalletButton = () => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="font-semibold">Connect Wallet</DialogTitle>
+            <DialogTitle className="font-semibold mb-4">
+              Connect Wallet
+            </DialogTitle>
             <DialogDescription className="flex flex-col gap-2">
               {connectors.map((connector) => (
                 <Button

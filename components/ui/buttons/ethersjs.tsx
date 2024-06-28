@@ -23,7 +23,7 @@ const ConnectWalletButton = () => {
   };
 
   return (
-    <Button onClick={onConnect} className="w-[140px]">
+    <Button onClick={onConnect} className="w-[140px] bg-primary">
       {address ? shortenAddress(address as `0x${string}`) : "Connect"}
     </Button>
   );
