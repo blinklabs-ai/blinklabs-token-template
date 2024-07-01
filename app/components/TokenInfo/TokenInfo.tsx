@@ -19,6 +19,8 @@ const TokenInfo = () => {
     return <TokenInfoLoading />;
   }
 
+  console.log({ tokenSupply, decimals });
+
   return (
     <div className="flex flex-col gap-3 justify-between font-bold">
       <div className="w-full flex justify-between">
@@ -43,7 +45,7 @@ const TokenInfo = () => {
         <p>Creator Address</p>
         <div className="flex items-center gap-1">
           <Link href={""} target="_blank_" className="text-blue-400 underline">
-            {shortenAddress(owner)}
+            {shortenAddress(config.owner)}
           </Link>
           <Image
             src={"/icons/copy.svg"}
@@ -51,7 +53,7 @@ const TokenInfo = () => {
             width={14}
             alt="copy"
             className="cursor-pointer"
-            onClick={() => copyToClipboard(owner)}
+            onClick={() => copyToClipboard(config.owner)}
           />
         </div>
       </div>

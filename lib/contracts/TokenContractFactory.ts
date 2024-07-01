@@ -80,10 +80,6 @@ export interface TokenContract extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<string>;
 
-    owner(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<string>;
-
     decimals(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<number>;
@@ -99,7 +95,7 @@ export interface TokenContract extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumberish>;
 
-    maxSupply(
+    cap(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumberish>;
   };
@@ -109,10 +105,6 @@ export interface TokenContract extends BaseContract {
   ): Promise<string>;
 
   symbol(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<string>;
-
-  owner(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<string>;
 
@@ -131,7 +123,7 @@ export interface TokenContract extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<BigNumberish>;
 
-  maxSupply(
+  cap(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<BigNumberish>;
 }

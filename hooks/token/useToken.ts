@@ -66,20 +66,7 @@ export default () => {
           window.ethereum
         ).getSigner();
         const contract = TokenContractFactory.connect(contractAddress, signer);
-        const tokenSupply = await contract.maxSupply();
-        return tokenSupply;
-      } catch (error) {
-        return 0;
-      }
-    };
-
-    const ownerFn = async () => {
-      try {
-        const signer = await new ethers.BrowserProvider(
-          window.ethereum
-        ).getSigner();
-        const contract = TokenContractFactory.connect(contractAddress, signer);
-        const tokenSupply = await contract.owner();
+        const tokenSupply = await contract.cap();
         return tokenSupply;
       } catch (error) {
         return 0;
@@ -122,11 +109,6 @@ export default () => {
       queryFn: symbolFn,
     });
 
-    const { data: owner, isLoading: isLoadingOwner } = useQuery({
-      queryKey: [QUERY_KEYS.OWNER],
-      queryFn: ownerFn,
-    });
-
     const { data: tokenSupply, isLoading: isLoadingTokenSupply } = useQuery({
       queryKey: [QUERY_KEYS.TOKEN_SUPPLY],
       queryFn: tokenSupplyFn,
@@ -155,14 +137,12 @@ export default () => {
       isLoadingTokenSupply ||
       isLoadingName ||
       isLoadingSymbol ||
-      isLoadingOwner ||
       isLoadingDecimals;
 
     return {
       loading,
       name,
       symbol,
-      owner: owner ? owner : "",
       tokenSupply: tokenSupply ? tokenSupply.toString(10) : 0,
       decimals: decimals ? decimals : 0,
       balanceOf,
@@ -196,25 +176,12 @@ export default () => {
       }
     };
 
-    const ownerFn = async () => {
-      try {
-        const owner = await readContract(wagmiConfig, {
-          abi,
-          address: contractAddress,
-          functionName: "owner",
-        });
-        return owner as string;
-      } catch (error) {
-        return "";
-      }
-    };
-
     const tokenSupplyFn = async () => {
       try {
         const tokenSupply = await readContract(wagmiConfig, {
           abi,
           address: contractAddress,
-          functionName: "maxSupply",
+          functionName: "cap",
         });
         return tokenSupply as number;
       } catch (error) {
@@ -259,11 +226,6 @@ export default () => {
       queryFn: symbolFn,
     });
 
-    const { data: owner, isLoading: isLoadingOwner } = useQuery({
-      queryKey: [QUERY_KEYS.OWNER],
-      queryFn: ownerFn,
-    });
-
     const { data: tokenSupply, isLoading: isLoadingTokenSupply } = useQuery({
       queryKey: [QUERY_KEYS.TOKEN_SUPPLY],
       queryFn: tokenSupplyFn,
@@ -284,14 +246,12 @@ export default () => {
       isLoadingTokenSupply ||
       isLoadingName ||
       isLoadingSymbol ||
-      isLoadingOwner ||
       isLoadingDecimals;
 
     return {
       loading,
       name,
       symbol,
-      owner: owner ? owner : "",
       tokenSupply: tokenSupply ? tokenSupply.toString(10) : 0,
       decimals: decimals ? decimals : 0,
       balanceOf,
