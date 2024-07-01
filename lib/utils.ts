@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from "clsx";
+import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const shortenAddress = (address: `0x${string}` | string) => {
   if (!address) return "";
-  return `${address.slice(0, 6)}...${address.slice(-6)}`;
+  return `${address.slice(0, 5)}...${address.slice(-4)}`;
 };
 
 export const formatBigNumber = (

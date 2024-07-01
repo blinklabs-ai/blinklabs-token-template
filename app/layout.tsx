@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import localFont from "next/font/local";
+
 import clsx from "clsx";
+import localFont from "next/font/local";
 
 import { Providers } from "@/app/providers";
 import Header from "@/components/Header";
@@ -30,8 +31,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx("bg-background-page-body", satoshiFont.className)}>
         <Providers>
-          <Header />
-          {children}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Header />
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
