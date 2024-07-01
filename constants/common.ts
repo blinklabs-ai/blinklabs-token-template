@@ -17,3 +17,7 @@ export const chains = {
       "https://i.seadn.io/gcs/files/add78431195002e0ca5b9eb256b43073.jpg?auto=format&dpr=1&w=256",
   },
 };
+
+export const LINKS = {
+  UNISWAP: "https://app.uniswap.org/",
+}

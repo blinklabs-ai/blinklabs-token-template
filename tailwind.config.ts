@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -18,39 +18,160 @@ const config = {
       },
     },
     extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+      fontFamily: {
+        satoshi: ["Satoshi", "sans-serif"],
+      },
+      backgroundColor: {
+        "page-body": "var(--bg-page-body)",
+        "main-container": "var(--bg-main-container)",
+        base: "var(--bg-base)",
+        secondary: "var(--bg-secondary)",
+        active: "var(--bg-active)",
+        "active-hover": "var(--bg-active-hover)",
+        inactive: "var(--bg-inactive)",
+        inverse: {
+          DEFAULT: "var(--bg-inverse)",
+          hover: "var(--bg-inverse-hover)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--bg-popover-base)",
+          subtle: "var(--bg-popover-base-subtle)",
+        },
+        brand: {
+          DEFAULT: "var(--bg-brand)",
+          hover: "var(--bg-brand-hover)",
+          inactive: "var(--bg-brand-inactive)",
+        },
+        error: {
+          DEFAULT: "var(--bg-error-pri)",
+          surface: "var(--bg-error-surface)",
+          hover: "var(--bg-error-pri-hover)",
+          disabled: "var(--bg-error-pri-disabled)",
+        },
+        success: "var(--bg-success)",
+        warning: "var(--bg-warning)",
+        info: "var(--bg-info)",
+      },
+      borderColor: {
+        DEFAULT: "var(--border-base)",
+        subtle: "var(--border-subtle)",
+        inverse: "var(--border-inverse)",
+        strong: "var(--border-strong)",
+        inactive: "var(--border-inactive)",
+        brand: "var(--border-brand)",
+        "brand-inverse": "var(--border-brand-inverse)",
+        error: "var(--border-error)",
+        "error-strong": "var(--border-error-strong)",
+        success: "var(--border-success)",
+        "success-strong": "var(--border-success-strong)",
+        warning: "var(--border-warning)",
+        info: "var(--border-info)",
+      },
+      textColor: {
+        DEFAULT: "var(--text-base)",
+        subtle: "var(--text-subtle)",
+        strong: "var(--text-strong)",
+        inverse: "var(--text-inverse)",
+        inactive: "var(--text-inactive)",
+        "on-color": "var(--text-on-color)",
+        brand: "var(--text-brand)",
+        "brand-inverse": "var(--text-brand-inverse)",
+        error: "var(--text-error)",
+        "error-strong": "var(--text-error-strong)",
+        "error-disabled": "var(--text-error-disabled)",
+        success: "var(--text-success)",
+        "success-strong": "var(--text-success-strong)",
+        warning: "var(--text-warning)",
+        "warning-strong": "var(--text-warning-strong)",
+        info: "var(--text-info)",
+        "info-strong": "var(--text-info-strong)",
+      },
+      colors: {
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
+        },
+        destructive: {
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
+        },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        accent: {
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
+        },
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
+        neutral: {
+          50: "var(--color-neutral-50)",
+          100: "var(--color-neutral-100)",
+          200: "var(--color-neutral-200)",
+          300: "var(--color-neutral-300)",
+          400: "var(--color-neutral-400)",
+          500: "var(--color-neutral-500)",
+          600: "var(--color-neutral-600)",
+          700: "var(--color-neutral-700)",
+          800: "var(--color-neutral-800)",
+          900: "var(--color-neutral-900)",
+          950: "var(--color-neutral-950)",
+        },
+        orange: {
+          100: "var(--color-orange-100)",
+          200: "var(--color-orange-200)",
+          300: "var(--color-orange-300)",
+          400: "var(--color-orange-400)",
+          500: "var(--color-orange-500)",
+          600: "var(--color-orange-600)",
+        },
+        red: {
+          100: "var(--color-red-100)",
+          200: "var(--color-red-200)",
+          300: "var(--color-red-300)",
+          400: "var(--color-red-400)",
+          500: "var(--color-red-500)",
+          600: "var(--color-red-600)",
+        },
+        yellow: {
+          100: "var(--color-yellow-100)",
+          200: "var(--color-yellow-200)",
+          300: "var(--color-yellow-300)",
+          400: "var(--color-yellow-400)",
+          500: "var(--color-yellow-500)",
+          600: "var(--color-yellow-600)",
+        },
+        green: {
+          100: "var(--color-green-100)",
+          200: "var(--color-green-200)",
+          300: "var(--color-green-300)",
+          400: "var(--color-green-400)",
+          500: "var(--color-green-500)",
+          600: "var(--color-green-600)",
+        },
+        blue: {
+          100: "var(--color-blue-100)",
+          200: "var(--color-blue-200)",
+          300: "var(--color-blue-300)",
+          400: "var(--color-blue-400)",
+          500: "var(--color-blue-500)",
+          600: "var(--color-blue-600)",
         },
       },
       borderRadius: {
@@ -75,6 +196,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "read -p 'Which contract do you want to deploy: ' module && read -p 'Enter token name: ' name && read -p 'Enter symbol: ' symbol && NAME=$name SYMBOL=$symbol hardhat ignition deploy ./ignition/modules/$module.js --network $npm_config_chain"
+    "deploy": "read -p 'Which contract do you want to deploy: ' module && read -p 'Enter token name: ' name && read -p 'Enter symbol: ' symbol && read -p 'Enter token total supply: ' supply && NAME=$name SYMBOL=$symbol SUPPLY=$supply hardhat ignition deploy ./ignition/modules/$module.js --network $npm_config_chain"
   },
   "keywords": [],
   "author": "",
