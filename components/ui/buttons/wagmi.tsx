@@ -23,6 +23,10 @@ const WagmiConnectWalletButton = () => {
   const connect = useWallet().connect as ConnectMutate<Config, unknown>;
   const [buttonLabel, setButtonLabel] = useState("Connect");
 
+  if (typeof window !== "undefined" && !window.ethereum) {
+    return null;
+  }
+
   useEffect(() => {
     if (address) {
       setButtonLabel(shortenAddress(address as `0x${string}`));

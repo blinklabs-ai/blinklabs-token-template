@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import useWallet from "@/hooks/wallet/useWallet";
 
 import { Button } from "./button";
 
 import config from "@/uiconfig.json";
-import { chains } from "@/constants/common";
+import { LINKS, chains } from "@/constants/common";
 
 const ChainButton = () => {
   const [currentChainId, setCurrentChainId] = useState<number>(0);
@@ -23,15 +24,19 @@ const ChainButton = () => {
     }
   };
 
-  if (typeof window !== "undefined") {
-    window.ethereum.on("chainChanged", (chainId: string) => {
-      setCurrentChainId(parseInt(chainId, 16));
-    });
+  if (window) {
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", (chainId: string) => {
+        setCurrentChainId(parseInt(chainId, 16));
+      });
+    } else {
+      return (
+        <Link href={LINKS.METAMASK} target="_blank_">
+          <Button className="text-white font-semibold">Install Metamask</Button>
+        </Link>
+      );
+    }
   }
-
-  useEffect(() => {
-    setCurrentChainId(parseInt(window.ethereum.chainId, 16));
-  }, [typeof window]);
 
   return (
     <Button

@@ -22,6 +22,10 @@ const ConnectWalletButton = () => {
     connect.mutate();
   };
 
+  if (typeof window !== "undefined" && !window.ethereum) {
+    return null;
+  }
+
   return (
     <Button onClick={onConnect} className="w-[140px] bg-primary">
       {address ? shortenAddress(address as `0x${string}`) : "Connect"}
