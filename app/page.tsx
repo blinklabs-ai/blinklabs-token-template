@@ -38,7 +38,12 @@ const MintPage = () => {
                 target="_blank"
                 className="bg-white rounded-full p-1 w-[27px] h-[27px] flex items-center justify-center"
               >
-                <img src={`logos/${key}-icon.svg`} alt={key} />
+                <Image
+                  src={`logos/${key}-icon.svg`}
+                  alt={key}
+                  width={16}
+                  height={16}
+                />
               </Link>
             ))}
           </div>
