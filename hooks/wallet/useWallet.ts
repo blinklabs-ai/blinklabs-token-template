@@ -18,9 +18,11 @@ import { BrowserProvider } from "ethers";
 import config from "@/uiconfig.json";
 import { LIBS } from "@/constants/common";
 import { QUERY_KEYS } from "@/constants/queryKeys";
+import { CHAINS } from "@/constants/chains";
 
 const connectWithWagmi = () => {
   const chainId = useChainId();
+  const chainInfo = CHAINS[chainId as keyof typeof CHAINS];
   const { switchChainAsync: switchChainWagmi } = useSwitchChain();
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
@@ -42,9 +44,9 @@ const connectWithWagmi = () => {
             params: [
               {
                 chainId: `0x${chainId}`,
-                rpcUrls: [config.chain.rpc],
-                chainName: config.chain.name,
-                nativeCurrency: config.chain.nativeCurrency,
+                rpcUrls: [chainInfo.rpc],
+                chainName: chainInfo.name,
+                nativeCurrency: chainInfo.nativeCurrency,
               },
             ],
           });
@@ -76,6 +78,7 @@ const connectWithEthers = () => {
   const address = data as `0x${string}`;
   const isConnected = !!address;
   const chainId = typeof window !== "undefined" && window.ethereum.chainId;
+  const chainInfo = CHAINS[chainId as keyof typeof CHAINS];
 
   const connectFn = async () => {
     const provider = new BrowserProvider(window.ethereum);
@@ -114,9 +117,9 @@ const connectWithEthers = () => {
             params: [
               {
                 chainId: `0x${chainId}`,
-                rpcUrls: [config.chain.rpc],
-                chainName: config.chain.name,
-                nativeCurrency: config.chain.nativeCurrency,
+                rpcUrls: [chainInfo.rpc],
+                chainName: chainInfo.name,
+                nativeCurrency: chainInfo.nativeCurrency,
               },
             ],
           });

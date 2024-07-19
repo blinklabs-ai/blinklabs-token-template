@@ -17,8 +17,8 @@ const ChainButton = () => {
 
   const onSwitchChain = async () => {
     try {
-      await switchChain(config.chain.id.toString(16));
-      setCurrentChainId(config.chain.id);
+      await switchChain(config.chainId.toString(16));
+      setCurrentChainId(config.chainId);
     } catch (error) {
       console.log({ error });
     }
@@ -43,7 +43,7 @@ const ChainButton = () => {
       className="bg-primary text-white flex gap-2 items-center px-4 py-2 rounded-md"
       onClick={onSwitchChain}
     >
-      {currentChainId === config.chain.id ? (
+      {currentChainId === config.chainId ? (
         <>
           <Image
             src={chainInfo.logoUrl}

@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+  "contractAddress": "0x5b9E1555E5B15A6c01a4385A459fcfAf62f5CD7B",
   "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
   "abi": [
     {
@@ -372,16 +372,7 @@
       "type": "function"
     }
   ],
-  "chain": {
-    "id": 31337,
-    "name": "localhost",
-    "nativeCurrency": {
-      "decimals": 18,
-      "name": "Ether",
-      "symbol": "ETH"
-    },
-    "rpc": "http://localhost:8545"
-  },
+  "chainId": 11155111,
   "lib": "wagmi",
   "project": {
     "name": "The Token",
