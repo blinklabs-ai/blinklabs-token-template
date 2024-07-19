@@ -3,15 +3,18 @@
 import BigNumber from "bignumber.js";
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 
 import useToken from "@/hooks/token/useToken";
 import { copyToClipboard, formatBigNumber, shortenAddress } from "@/lib/utils";
 import config from "@/uiconfig.json";
 
 import TokenInfoLoading from "./TokenInfoLoading";
+import { CHAINS } from "@/constants/chains";
 
 const TokenInfo = () => {
-  const { contractAddress } = config;
+  const { contractAddress, chainId } = config;
+  const chainInfo = CHAINS[chainId as keyof typeof CHAINS];
   const { loading, tokenSupply, name, symbol, decimals } = useToken();
 
   if (loading) {
@@ -44,9 +47,16 @@ const TokenInfo = () => {
           {item.isAddress ? (
             <div className="flex items-center gap-1">
               <Link
-                href={""}
+                href={
+                  chainInfo.id === 31337
+                    ? ""
+                    : `${chainInfo.explorer}/address/${item.value}`
+                }
                 target="_blank"
-                className="text-blue-400 underline break-all"
+                className={clsx(
+                  "underline break-all",
+                  chainInfo.id !== 31337 && "text-blue-400"
+                )}
               >
                 {shortenAddress(item.value)}
               </Link>
