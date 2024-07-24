@@ -13,6 +13,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Ethereum",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628",
   },
   80002: {
     id: 80002,
@@ -28,6 +30,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Polygon",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/4713/standard/polygon.png?1698233745",
   },
   31337: {
     id: 31337,
@@ -43,6 +47,8 @@ export const CHAINS = {
     type: "devnet",
     parentChain: "Hardhat",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628",
   },
   5: {
     id: 5,
@@ -58,6 +64,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Ethereum",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628",
   },
   1313161555: {
     id: 1313161555,
@@ -73,6 +81,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Aurora",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/20582/standard/aurora.jpeg?1696519989",
   },
   59141: {
     id: 59141,
@@ -88,6 +98,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Linea",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/asset_platforms/images/135/small/linea.jpeg?1706606705",
   },
   84532: {
     id: 84532,
@@ -103,6 +115,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Base",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/asset_platforms/images/131/small/base-network.png?1720533039",
   },
   80084: {
     id: 80084,
@@ -118,6 +132,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Berachain",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/25238/standard/n2QLtggX_400x400.png?1696524379",
   },
   1287: {
     id: 1287,
@@ -133,6 +149,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "Moonbeam",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/31867/standard/moon-logo-200x200.png?1696530679",
   },
   5611: {
     id: 5611,
@@ -148,6 +166,8 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "BNB",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970",
   },
   97: {
     id: 97,
@@ -163,5 +183,7 @@ export const CHAINS = {
     type: "testnet",
     parentChain: "BNB",
     chainFamily: "evm",
+    logoUrl:
+      "https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970",
   },
 };

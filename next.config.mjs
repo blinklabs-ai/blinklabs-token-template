@@ -4,6 +4,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "assets.coingecko.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "i.seadn.io",
         port: "",
         pathname: "/**",

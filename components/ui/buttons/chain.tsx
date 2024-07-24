@@ -8,12 +8,14 @@ import useWallet from "@/hooks/wallet/useWallet";
 import { Button } from "./button";
 
 import config from "@/uiconfig.json";
-import { LINKS, chains } from "@/constants/common";
+import { LINKS } from "@/constants/common";
+import { CHAINS } from "@/constants/chains";
 
 const ChainButton = () => {
   const [currentChainId, setCurrentChainId] = useState<number>(0);
+  const { address } = useWallet();
   const { switchChain } = useWallet();
-  const chainInfo = chains[currentChainId as keyof typeof chains];
+  const chainInfo = CHAINS[currentChainId as keyof typeof CHAINS];
 
   const onSwitchChain = async () => {
     try {
@@ -36,6 +38,10 @@ const ChainButton = () => {
         </Link>
       );
     }
+  }
+
+  if (!address) {
+    return null;
   }
 
   return (

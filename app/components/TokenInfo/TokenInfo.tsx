@@ -32,6 +32,10 @@ const TokenInfo = () => {
           .toString(10)
       ),
     },
+    {
+      label: "Network",
+      value: chainInfo.name,
+    },
     { label: "Creator Address", value: config.owner, isAddress: true },
     { label: "Contract Address", value: contractAddress, isAddress: true },
   ];

@@ -26,30 +26,34 @@ const MintPage = () => {
           <Image
             src={logoUrl}
             alt="logo"
-            height={80}
-            width={80}
+            height={100}
+            width={100}
             className="rounded-lg mb-2 sm:mb-0"
           />
           <div className="flex gap-2 mt-2 sm:mt-0">
-            {Object.keys(media).map((key) => (
-              <Link
-                key={key}
-                href={media[key as keyof typeof media] as string}
-                target="_blank"
-                className="bg-white rounded-full p-1 w-[27px] h-[27px] flex items-center justify-center"
-              >
-                <Image
-                  src={`logos/${key}-icon.svg`}
-                  alt={key}
-                  width={16}
-                  height={16}
-                />
-              </Link>
-            ))}
+            {Object.keys(media).map((key) => {
+              const mediaUrl = media[key as keyof typeof media] as string;
+              if (!mediaUrl) return null;
+              return (
+                <Link
+                  key={key}
+                  href={mediaUrl}
+                  target="_blank"
+                  className="bg-white rounded-full p-1 w-[27px] h-[27px] flex items-center justify-center"
+                >
+                  <Image
+                    src={`logos/${key}-icon.svg`}
+                    alt={key}
+                    width={16}
+                    height={16}
+                  />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-20 px-4 py-16 mt-[60px] sm:mt-0">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-18 px-4 py-16 mt-[60px] sm:mt-0">
         <div className="sm:col-span-2 flex flex-col gap-3">
           <h4 className="text-lg font-bold">{name}</h4>
           <p className="text-sm line-clamp-4">{description}</p>
