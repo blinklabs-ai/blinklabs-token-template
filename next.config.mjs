@@ -10,7 +10,13 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "blinklabs.ai",
+        hostname: "ai-backend.dev.blinklabs.ai",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ai-backend.blinklabs.ai",
         port: "",
         pathname: "/**",
       },
