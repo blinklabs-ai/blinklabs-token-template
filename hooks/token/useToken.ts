@@ -143,7 +143,9 @@ export default () => {
       loading,
       name,
       symbol,
-      tokenSupply: tokenSupply ? tokenSupply.toString(10) : 0,
+      tokenSupply: tokenSupply
+        ? tokenSupply.toString(10)
+        : config.project.tokenSupply,
       decimals: decimals ? decimals : 0,
       balanceOf,
     };
@@ -252,7 +254,9 @@ export default () => {
       loading,
       name,
       symbol,
-      tokenSupply: tokenSupply ? tokenSupply.toString(10) : 0,
+      tokenSupply: tokenSupply
+        ? tokenSupply.toString(10)
+        : config.project.tokenSupply,
       decimals: decimals ? decimals : 0,
       balanceOf,
     };

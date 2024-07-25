@@ -21,10 +21,13 @@ const WagmiConnectWalletButton = () => {
   const { connectors } = useConnect();
   const { address } = useWallet();
   const connect = useWallet().connect as ConnectMutate<Config, unknown>;
-  const [buttonLabel, setButtonLabel] = useState("Connect");
+  const [buttonLabel, setButtonLabel] = useState("Connect Wallet");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setButtonLabel(shortenAddress(address as `0x${string}`));
+    if (address) {
+      setButtonLabel(shortenAddress(address as `0x${string}`));
+    }
   }, [address]);
 
   if (typeof window !== "undefined" && !window.ethereum) {
@@ -33,8 +36,12 @@ const WagmiConnectWalletButton = () => {
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger className="bg-primary text-white text-sm font-semibold h-10 px-4 py-2 rounded-md w-[140px]">
+      <Dialog open={open}>
+        <DialogTrigger
+          className="bg-primary text-white text-sm font-semibold h-10 px-4 py-2 rounded-md w-[140px]"
+          disabled={!!address}
+          onClick={() => setOpen(true)}
+        >
           {buttonLabel}
         </DialogTrigger>
         <DialogContent>
@@ -46,7 +53,10 @@ const WagmiConnectWalletButton = () => {
               {connectors.map((connector) => (
                 <Button
                   key={connector.id}
-                  onClick={() => connect({ connector })}
+                  onClick={() => {
+                    connect({ connector });
+                    setOpen(false);
+                  }}
                 >
                   {connector.name}
                 </Button>

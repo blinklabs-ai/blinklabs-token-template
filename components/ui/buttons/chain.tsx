@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+
+import { CHAINS } from "@/constants/chains";
+import { LINKS } from "@/constants/common";
 import useWallet from "@/hooks/wallet/useWallet";
+import config from "@/uiconfig.json";
 
 import { Button } from "./button";
 
-import config from "@/uiconfig.json";
-import { LINKS, chains } from "@/constants/common";
-
 const ChainButton = () => {
   const [currentChainId, setCurrentChainId] = useState<number>(0);
+  const { address } = useWallet();
   const { switchChain } = useWallet();
-  const chainInfo = chains[currentChainId as keyof typeof chains];
+  const chainInfo = CHAINS[currentChainId as keyof typeof CHAINS];
 
   const onSwitchChain = async () => {
     try {
@@ -38,9 +40,13 @@ const ChainButton = () => {
     }
   }
 
+  if (!address) {
+    return null;
+  }
+
   return (
     <Button
-      className="bg-primary text-white flex gap-2 items-center px-4 py-2 rounded-md"
+      className="bg-secondary text-white flex gap-2 items-center px-4 py-2 rounded-md"
       onClick={onSwitchChain}
     >
       {currentChainId === config.chainId ? (
