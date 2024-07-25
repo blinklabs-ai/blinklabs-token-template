@@ -30,16 +30,13 @@ const TokenTabs = () => {
     },
   ];
   return (
-    <Tabs
-      defaultValue="details"
-      className="w-full flex flex-col gap-2 items-center justify-center"
-    >
-      <TabsList className="flex flex-row gap-x-4 text-neutral-400">
+    <Tabs defaultValue="details" className="w-full flex flex-col gap-2">
+      <TabsList className="w-full flex flex-row gap-x-4 text-neutral-400 justify-between overflow-x-auto">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.value}
             value={tab.value}
-            className="font-bold"
+            className="font-bold whitespace-nowrap"
             disabled={tab.disabled}
           >
             {tab.label}
@@ -47,7 +44,7 @@ const TokenTabs = () => {
         ))}
       </TabsList>
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
+        <TabsContent key={tab.value} value={tab.value} className="w-full px-4">
           {tab.component}
         </TabsContent>
       ))}
