@@ -1,11 +1,10 @@
-import React from "react";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import TokenDetails from "../(tabs)/TokenDetails";
+
+import HolderDistribution from "../(tabs)/HolderDistribution";
 import Price from "../(tabs)/Price";
 import SupplyDynamics from "../(tabs)/SupplyDynamics";
+import TokenDetails from "../(tabs)/TokenDetails";
 import Volume from "../(tabs)/Volume";
-import HolderDistribution from "../(tabs)/HolderDistribution";
 
 const TokenTabs = () => {
   const tabs = [
@@ -35,7 +34,7 @@ const TokenTabs = () => {
       defaultValue="details"
       className="w-full flex flex-col gap-2 items-center justify-center"
     >
-      <TabsList className="grid w-fit grid-cols-5 text-neutral-400">
+      <TabsList className="flex flex-row gap-x-4 text-neutral-400">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.value}
