@@ -32,6 +32,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "prod.ai.api.infinitigenesis.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };
