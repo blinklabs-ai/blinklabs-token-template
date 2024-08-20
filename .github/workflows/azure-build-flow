@@ -1,0 +1,45 @@
+# This workflow will trigger a workflow in other repo to build image using the docker file present in other repo  and push it to azure
+name: Azure build trigger
+
+permissions:
+  contents: read
+  id-token: write
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'dev' }}
+    environment: dev
+
+
+    steps:
+      - name: Checkout token-template
+        uses: actions/checkout@v3
+
+      - name: Trigger workflow in repo1
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.ACCESS_PAT }}
+          script: |
+            const { data: workflows } = await github.rest.actions.listRepoWorkflows({
+              owner: 'blinklabs-ai',
+              repo: 'test-workflow-dispatch'
+            });
+            
+            const workflowId = workflows.workflows.find(workflow => workflow.name === 'Azure token-template build').id;
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'blinklabs-ai',
+              repo: 'test-workflow-dispatch',
+              workflow_id: workflowId,
+              ref: 'main', // Specify the branch or commit SHA to run the workflow on
+              inputs: {
+                branch_name: 'dev',
+                commit_id: "${{ github.sha }}"
+              }
+            });
