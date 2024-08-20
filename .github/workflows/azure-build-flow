@@ -28,14 +28,14 @@ jobs:
           script: |
             const { data: workflows } = await github.rest.actions.listRepoWorkflows({
               owner: 'blinklabs-ai',
-              repo: 'test-workflow-dispatch'
+              repo: 'blinklabs-backend-orchestrator'
             });
             
-            const workflowId = workflows.workflows.find(workflow => workflow.name === 'Azure token-template build').id;
+            const workflowId = workflows.workflows.find(workflow => workflow.name === 'Usecase token-template build').id;
 
             await github.rest.actions.createWorkflowDispatch({
               owner: 'blinklabs-ai',
-              repo: 'test-workflow-dispatch',
+              repo: 'blinklabs-backend-orchestrator',
               workflow_id: workflowId,
               ref: 'main', // Specify the branch or commit SHA to run the workflow on
               inputs: {
