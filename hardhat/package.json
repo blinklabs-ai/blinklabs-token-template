@@ -12,10 +12,11 @@
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.5"
+    "hardhat": "^2.22.9"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",
+    "@radix-ui/react-tooltip": "^1.1.2",
     "dotenv": "^16.4.5"
   }
 }

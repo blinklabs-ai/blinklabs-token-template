@@ -22,10 +22,10 @@ const Header = () => {
   return (
     <div className="w-full flex gap-2 justify-between py-4">
       <div className="w-[140px]" />
-      <div className="flex gap-4">
+      {/* <div className="flex gap-4">
         <ChainButton />
         <ConnectButton />
-      </div>
+      </div> */}
     </div>
   );
 };
