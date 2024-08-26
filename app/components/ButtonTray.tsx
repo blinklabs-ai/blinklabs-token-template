@@ -7,17 +7,25 @@ import { LINKS } from "@/constants/common";
 import config from "@/uiconfig.json";
 
 const ButtonTray = () => {
-
   const { project } = config;
+
+  const isLiquidityUrlAvailable = project?.liquidityUrl && project.liquidityUrl.trim() !== "";
 
   return (
     <div className="flex items-center gap-2 mt-6">
-      <Button className="font-bold" variant={"default"}>
-        <Link href={project?.liquidityUrl} target="_blank_">
-          Buy on PancakeSwap
-        </Link>
+      <Button
+        className="font-bold"
+        variant={"default"}
+        disabled={!isLiquidityUrlAvailable}
+      >
+        {isLiquidityUrlAvailable ? (
+          <Link href={project.liquidityUrl} target="_blank">
+            Buy on PancakeSwap
+          </Link>
+        ) : (
+          "Liquidity not supplied"
+        )}
       </Button>
-      {/* <p className="font-bold text-inactive">(Coming soon!)</p> */}
     </div>
   );
 };
