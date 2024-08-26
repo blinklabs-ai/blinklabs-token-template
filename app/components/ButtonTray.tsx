@@ -13,7 +13,7 @@ const ButtonTray = () => {
   return (
     <div className="flex items-center gap-2 mt-6">
       <Button className="font-bold" variant={"default"}>
-        <Link href={project?.swapLink} target="_blank_">
+        <Link href={project?.liquidityUrl} target="_blank_">
           Buy on PancakeSwap
         </Link>
       </Button>

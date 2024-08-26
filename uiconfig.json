@@ -430,7 +430,7 @@
   "lib": "wagmi",
   "project": {
     "name": "batman",
-    "swapLink": "https://pancakeswap.finance/swap?outputCurrency=0x7fa27d48ab08518936cf7943491fe8451380ed12",
+    "liquidityUrl": "https://pancakeswap.finance/swap?outputCurrency=0x7fa27d48ab08518936cf7943491fe8451380ed12",
     "description": "Introducing BATMAN Token: The hero your wallet deserves! Dive into Gotham's world with BAT, promising superhero-worthy returns and a hint of darkness. Unleash the Bat-wealth and watch your investments soar. Join the fair launch and become part of the financial revolution today!",
     "logoUrl": "https://ai-backend.dev.blinklabs.ai/api/v1/images/yZpV4OM/logo.10287.png",
     "bannerUrl": "https://ai-backend.dev.blinklabs.ai/api/v1/images/yZpV4OM/banner.76178.png",
