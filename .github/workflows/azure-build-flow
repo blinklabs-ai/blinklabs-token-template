@@ -9,11 +9,11 @@ on:
   push:
     branches:
       - dev
+      - 
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    # environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'dev' }}
     environment: dev
 
 
@@ -31,7 +31,7 @@ jobs:
               repo: 'blinklabs-backend-orchestrator'
             });
             
-            const workflowId = workflows.workflows.find(workflow => workflow.name === 'Usecase token-template build').id;
+            const workflowId = workflows.workflows.find(workflow => workflow.name === 'Azure token-template build').id;
 
             await github.rest.actions.createWorkflowDispatch({
               owner: 'blinklabs-ai',
