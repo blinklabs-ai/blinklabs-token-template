@@ -27,8 +27,8 @@ const ChainButton = () => {
   };
 
   if (window) {
-    if (window.ethereum) {
-      window.ethereum.on("chainChanged", (chainId: string) => {
+    if (window?.ethereum) {
+      window?.ethereum.on("chainChanged", (chainId: string) => {
         setCurrentChainId(parseInt(chainId, 16));
       });
     } else {
@@ -55,6 +55,7 @@ const ChainButton = () => {
             src={chainInfo.logoUrl}
             width={24}
             height={24}
+            unoptimized
             alt="chain-logo"
             className="rounded-full"
           />

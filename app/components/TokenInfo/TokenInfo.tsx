@@ -68,6 +68,7 @@ const TokenInfo = () => {
                 src="/icons/copy.svg"
                 height={14}
                 width={14}
+                unoptimized
                 alt="copy"
                 className="cursor-pointer flex-shrink-0"
                 onClick={() => copyToClipboard(item.value)}
