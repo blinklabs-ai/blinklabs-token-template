@@ -20,6 +20,7 @@ const MintPage = () => {
             alt="banner"
             fill
             style={{ objectFit: "cover" }}
+            unoptimized
           />
         </div>
         <div className="w-full px-4 flex flex-col sm:flex-row items-center sm:items-end justify-between absolute -bottom-[50px]">
@@ -28,6 +29,7 @@ const MintPage = () => {
             alt="logo"
             height={100}
             width={100}
+            unoptimized
             className="rounded-lg mb-2 sm:mb-0"
           />
           <div className="flex gap-2 mt-2 sm:mt-0">
@@ -46,6 +48,7 @@ const MintPage = () => {
                     alt={key}
                     width={16}
                     height={16}
+                    unoptimized
                   />
                 </Link>
               );
