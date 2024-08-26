@@ -41,7 +41,7 @@ const SocialIcons = ({ media }: { media: Record<string, string> }) => (
       );
 
       return (
-        <div className="flex items-center">
+        <div className="flex items-center" key={key}>
           <Link href={url} target="_blank" rel="noopener noreferrer">
                   {socialIcon}
                 </Link>
