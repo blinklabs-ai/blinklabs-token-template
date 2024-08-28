@@ -20,7 +20,7 @@ jobs:
       - name: Checkout token-template
         uses: actions/checkout@v3
 
-      - name: Trigger workflow in repo1
+      - name: Trigger workflow in orchestrator repo usecase-token builder
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.ACCESS_PAT }}
