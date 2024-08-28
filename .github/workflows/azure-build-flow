@@ -1,5 +1,5 @@
-# This workflow will trigger a workflow in other repo to build image using the docker file present in other repo  and push it to azure
-name: Azure build trigger
+# This workflow will build image using the docker file present in third repo  and push it to azure
+name: Azure build
 
 permissions:
   contents: read
@@ -9,8 +9,6 @@ on:
   push:
     branches:
       - dev
-
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
