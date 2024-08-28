@@ -10,6 +10,7 @@ on:
     branches:
       - dev
 
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
