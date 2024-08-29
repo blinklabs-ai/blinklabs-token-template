@@ -19,6 +19,7 @@ const TokenInfo = () => {
 
   console.log(name, 'name')
   console.log(symbol, 'symbol')
+  
   console.log(formatBigNumber(
     BigNumber(tokenSupply)
       .dividedBy(BigNumber(10).exponentiatedBy(decimals))
