@@ -30,7 +30,7 @@ jobs:
               repo: 'blinklabs-backend-orchestrator'
             });
             
-            const workflowId = workflows.workflows.find(workflow => workflow.name === 'Azure token-template build').id;
+            const workflowId = workflows.workflows.find(workflow => workflow.name === 'usecase-token-builder').id;
 
             await github.rest.actions.createWorkflowDispatch({
               owner: 'blinklabs-ai',
