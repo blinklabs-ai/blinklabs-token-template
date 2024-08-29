@@ -17,14 +17,6 @@ const TokenInfo = () => {
   const chainInfo = CHAINS[chainId as keyof typeof CHAINS];
   const { loading, name, symbol, decimals, tokenSupply } = useToken();
 
-  console.log(name, 'name')
-  console.log(symbol, 'symbol')
-
-  console.log(formatBigNumber(
-    BigNumber(tokenSupply)
-      .dividedBy(BigNumber(10).exponentiatedBy(18))
-      .toString(10)), 'supply', project.tokenSupply)
-
   if (loading) {
     return <TokenInfoLoading />;
   }
