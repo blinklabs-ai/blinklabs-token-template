@@ -1,5 +1,5 @@
 {
-  "contractAddress": "0x7fa27d48ab08518936cf7943491fe8451380ed12",
+  "contractAddress": "0x94c9bd4595d4205e77ed832cdd41e1c6f8d70cc6",
   "owner": "0x266142a64cC181a3A619F39aA1f0FF760321350e",
   "abi": [
     {
@@ -426,21 +426,23 @@
       "type": "function"
     }
   ],
-  "chainId": 84532,
+  "chainId": 5611,
   "lib": "wagmi",
   "project": {
     "name": "batman",
-    "liquidityUrl": "https://pancakeswap.finance/swap?outputCurrency=0x7fa27d48ab08518936cf7943491fe8451380ed12",
-    "description": "Introducing BATMAN Token: The hero your wallet deserves! Dive into Gotham's world with BAT, promising superhero-worthy returns and a hint of darkness. Unleash the Bat-wealth and watch your investments soar. Join the fair launch and become part of the financial revolution today!",
+    "symbol": "BATMAN",
+    "description": "Chill like the Dark Knight, BATMAN token powers your crypto bat cave. Perfect for those who enjoy a relaxed yet heroic vibe in the crypto world.",
     "logoUrl": "https://ai-backend.dev.blinklabs.ai/api/v1/images/yZpV4OM/logo.10287.png",
     "bannerUrl": "https://ai-backend.dev.blinklabs.ai/api/v1/images/yZpV4OM/banner.76178.png",
-    "tokenDetails": "🦇 Welcome to the Gotham of Crypto! Introducing the Batman Token (BAT), the ultimate superhero of your wallet! With a mission to bring fairness and justice to the crypto world, this token is designed to ensure equal access and opportunity for all. \n\n🔹 **Fair Distribution Mechanism:** No pre-sale, no special treatment—everyone gets an equal chance to own BAT, ensuring a truly democratic launch.\n\n🔹 **Token Supply:** Limited to 1,000,000 BAT, this scarcity ensures value preservation.\n\n🔹 **Launch Date:** Keep your Bat-signal ready for updates!\n\n🔹 **Utility and Use Cases:** BAT empowers its holders to participate in Gotham's ecosystem, offering exclusive access to rewards, voting rights on community decisions, and potential partnerships.\n\n🔹 **Tokenomics:** With deflationary mechanics, BAT ensures a diminishing supply over time, enhancing value.\n\n🔹 **Community Governance:** Every BAT holder has a voice in shaping the future of the Gotham ecosystem, ensuring decentralized decision-making.\n\n🔹 **Chain Details:** Deployed on Base Sepolia, Chain ID 84532, with the symbol BAT.\n\nUnleash the Bat-wealth and become a part of a legendary journey! 🚀💰",
+    "vibes": "chill",
+    "tokenDetails": "# batman - Fair Launch Token\n\n## Token Overview\n• **Symbol**: BATMAN  \n• **Chain**: Optimistic Rollup Testnet (Chain ID: 5611)  \n• **Total Supply**: 1000000  \n\n## Fair Launch Mechanism\nThe BATMAN token invites everyone to chill like the Dark Knight with an open and fair launch. No pre-sales or exclusive deals here; it's all about equal opportunity. Dive into the crypto bat cave with ease and be part of a community that values laid-back yet heroic vibes.\n\n## Tokenomics\nThe BATMAN token keeps things straightforward with a total supply of 1000000. No complex lock-ups or vesting periods—just a smooth and simple distribution. While there aren't any deflationary mechanics, the focus is on creating a relaxed and engaging environment for everyone.\n\n## Utility and Use Cases\nBATMAN powers your crypto bat cave, offering a versatile token for those who appreciate a relaxed approach. Whether you're staking, trading, or just chilling, BATMAN is designed to make your crypto experience straightforward and enjoyable, perfect for anyone who wants to combine leisure with a touch of heroism.\n\n## Governance\nJoin the BATMAN community and have a say in shaping the future. While the vibe is relaxed, your voice matters, helping guide the direction of the project and ensuring it remains a chill and inclusive space for all.",
     "media": {
-      "telegram": "https://t.me/BatTokenChannel",
-      "discord": "https://discord.gg/BatCaveCrypto",
-      "x": "https://x.com/BatTokenGotham"
+      "x": "https://x.com/chillbatman",
+      "telegram": "https://t.me/chillbatman",
+      "discord": "https://discord.gg/chillbatman"
     },
-    "tokenSupply": "1000000000000000000000000"
+    "tokenSupply": "1000000000000000000000000",
+    "liquidityUrl": "https://pancakeswap.finance/swap?chain=opBNBTestnet&inputCurrency=tBNB&outputCurrency=0x94c9bd4595d4205e77ed832cdd41e1c6f8d70cc6"
   },
   "styles": {
     "backgroundColor": "#f0f0f0",
