@@ -13,17 +13,24 @@ import { CHAINS } from "@/constants/chains";
 import { Icons } from "../Icons";
 
 const TokenInfo = () => {
-  const { contractAddress, chainId } = config;
+  const { contractAddress, chainId, project } = config;
   const chainInfo = CHAINS[chainId as keyof typeof CHAINS];
-  const { loading, tokenSupply, name, symbol, decimals } = useToken();
+  const { loading, name, symbol, decimals, tokenSupply } = useToken();
+
+  console.log(name, 'name')
+  console.log(symbol, 'symbol')
+  console.log(formatBigNumber(
+    BigNumber(tokenSupply)
+      .dividedBy(BigNumber(10).exponentiatedBy(decimals))
+      .toString(10)), 'supply', project.tokenSupply)
 
   if (loading) {
     return <TokenInfoLoading />;
   }
 
   const infoItems = [
-    { label: "Token Name", value: name },
-    { label: "Ticker", value: symbol },
+    { label: "Token Name", value: project?.name || name },
+    { label: "Ticker", value: project?.symbol || symbol },
     {
       label: "Token Supply",
       value: formatBigNumber(
