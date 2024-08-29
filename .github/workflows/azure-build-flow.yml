@@ -35,7 +35,7 @@ jobs:
               owner: 'blinklabs-ai',
               repo: 'blinklabs-backend-orchestrator',
               workflow_id: workflowId,
-              ref: 'main', // Specify the branch or commit SHA to run the workflow on
+              ref: 'master', // Specify the branch or commit SHA to run the workflow on
               inputs: {
                 branch_name: 'dev',
                 commit_id: "${{ github.sha }}"
