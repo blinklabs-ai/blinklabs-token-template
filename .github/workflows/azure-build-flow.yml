@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - dev
-      
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -30,12 +30,10 @@ jobs:
               repo: 'blinklabs-backend-orchestrator'
             });
             
-            const workflowId = workflows.workflows.find(workflow => workflow.name === 'usecase-token-builder').id;
-
             await github.rest.actions.createWorkflowDispatch({
               owner: 'blinklabs-ai',
               repo: 'blinklabs-backend-orchestrator',
-              workflow_id: workflowId,
+              workflow_id: 'usecase-token-builder',
               ref: 'master', // Specify the branch or commit SHA to run the workflow on
               inputs: {
                 branch_name: 'dev',
