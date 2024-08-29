@@ -33,7 +33,7 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: 'blinklabs-ai',
               repo: 'blinklabs-backend-orchestrator',
-              workflow_id: 'usecase-token-builder',
+              workflow_id: 'usecase-token-builder.yml',
               ref: 'master', // Specify the branch or commit SHA to run the workflow on
               inputs: {
                 branch_name: 'dev',
