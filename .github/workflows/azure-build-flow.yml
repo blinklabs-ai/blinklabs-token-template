@@ -1,6 +1,7 @@
 # This workflow will build image using the docker file present in third repo  and push it to azure
 name: Azure build
 
+
 permissions:
   contents: read
   id-token: write
