@@ -31,7 +31,7 @@ const TokenTabs = () => {
   ];
   return (
     <Tabs defaultValue="details" className="w-full flex flex-col gap-2">
-      <TabsList className="w-full flex flex-row gap-x-4 text-neutral-400 justify-between overflow-x-auto">
+      <TabsList className="flex flex-row gap-x-4 text-neutral-400 justify-start px-3 overflow-x-auto">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.value}

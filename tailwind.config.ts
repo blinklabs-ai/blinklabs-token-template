@@ -73,6 +73,7 @@ const config = {
         strong: "var(--text-strong)",
         inverse: "var(--text-inverse)",
         inactive: "var(--text-inactive)",
+        "inactive-hover": "var(--text-inactive-hover)",
         "on-color": "var(--text-on-color)",
         brand: "var(--text-brand)",
         "brand-inverse": "var(--text-brand-inverse)",

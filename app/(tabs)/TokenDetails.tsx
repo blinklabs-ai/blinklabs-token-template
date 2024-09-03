@@ -9,7 +9,7 @@ import config from "@/uiconfig.json";
 const TokenDetails = () => {
   const { tokenDetails } = config.project;
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col">
       <MarkdownText
         className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 animate-fade-in-up break-words p-2"
         remarkPlugins={[remarkGfm, remarkMath]}

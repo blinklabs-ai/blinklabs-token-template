@@ -2,7 +2,7 @@ import React from "react";
 
 const TokenDetails = () => {
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col">
       <div className="flex flex-col gap-4">
         <p className="text-xs font-bold">Project Info</p>
         <p className="text-xs font-semibold">

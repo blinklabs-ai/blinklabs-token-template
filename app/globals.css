@@ -147,6 +147,7 @@
     --text-subtle: var(--color-neutral-600);
     --text-strong: var(--color-neutral-950);
     --text-inactive: var(--color-neutral-400);
+    --text-inactive-hover: var(--color-neutral-300);
     --text-inverse: var(--color-neutral-50);
     --text-on-color: var(--color-white);
 

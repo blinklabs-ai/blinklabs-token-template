@@ -31,10 +31,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx("bg-background-page-body", satoshiFont.className)}>
         <Providers>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Header />
-            {children}
-          </div>
+          {/* <Header /> */}
+          {children}
         </Providers>
       </body>
     </html>
