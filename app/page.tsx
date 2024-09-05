@@ -15,6 +15,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "@/app/components/ui/resizable";
+import ConnectWalletButton from "@/components/ui/buttons/ConnectWalletButton";
 
 const socialIcons = {
   x: {
@@ -77,7 +78,7 @@ const MintPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col px-4 pb-8">
-      <div className="py-4">
+      <div className="py-4 flex items-center justify-between">
         <button
           onClick={handleGoBack}
           className="inline-flex items-center text-sm font-medium text-inactive hover:text-inactive-hover transition-colors"
@@ -85,6 +86,8 @@ const MintPage = () => {
           <Icons.chevronLeft className="mr-2 h-4 w-4" />
           Back to Explore
         </button>
+
+        <ConnectWalletButton />
       </div>
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={70}>
@@ -95,9 +98,9 @@ const MintPage = () => {
                   src={bannerUrl}
                   alt="banner"
                   fill
-                  style={{ objectFit: "cover" }}
                   unoptimized
-                  className="rounded-lg"
+                  priority={true}
+                  className="rounded-lg object-cover"
                 />
               </div>
               <div className="w-full px-4 flex flex-col sm:flex-row items-center sm:items-end justify-between absolute -bottom-[50px]">

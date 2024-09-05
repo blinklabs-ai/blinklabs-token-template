@@ -5,7 +5,6 @@ import clsx from "clsx";
 import localFont from "next/font/local";
 
 import { Providers } from "@/app/providers";
-import Header from "@/components/Header";
 
 const satoshiFont = localFont({
   src: [
