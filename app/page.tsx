@@ -9,13 +9,14 @@ import ButtonTray from "@/app/components/ButtonTray";
 import TokenInfo from "@/app/components/TokenInfo/TokenInfo";
 import TokenTabs from "@/app/components/TokenTabs";
 import ChatGroup from "@/app/components/ChatGroup";
-import { Icons } from "@/app/components/Icons";
+import { Icons } from "@/components/Icons";
 import {
   ResizablePanelGroup,
   ResizablePanel,
   ResizableHandle,
 } from "@/app/components/ui/resizable";
 import ConnectWalletButton from "@/components/ui/buttons/ConnectWalletButton";
+import SwapWidget from "@/app/components/SwapWidget/SwapWidget";
 
 const socialIcons = {
   x: {
@@ -115,13 +116,23 @@ const MintPage = () => {
                 <SocialIcons media={media} />
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-18 pt-16 pb-6 px-5 sm:mt-0">
-              <div className="sm:col-span-2 flex flex-col gap-3">
-                <h4 className="text-lg font-bold">{name}</h4>
-                <p className="text-sm line-clamp-4">{description}</p>
-                <ButtonTray />
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-5 xl:grid-cols-5 xl:gap-8 pt-16 pb-6 px-5">
+              <div className="xl:col-span-3">
+                <div className="flex flex-col gap-8">
+                  <div className="sm:col-span-2 flex flex-col gap-3">
+                    <h4 className="text-lg font-bold">{name}</h4>
+                    <p className="text-sm line-clamp-4">{description}</p>
+                    <ButtonTray />
+                  </div>
+                  <div className="py-6 px-4 bg-neutral-800 rounded-lg">
+                    <TokenInfo />
+                  </div>
+                </div>
               </div>
-              <TokenInfo />
+
+              <div className="xl:col-span-2">
+                <SwapWidget />
+              </div>
             </div>
 
             <TokenTabs />

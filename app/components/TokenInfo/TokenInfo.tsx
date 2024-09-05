@@ -1,16 +1,14 @@
 "use client";
 
 import BigNumber from "bignumber.js";
-import Link from "next/link";
-import clsx from "clsx";
 
 import useToken from "@/hooks/token/useToken";
-import { copyToClipboard, formatBigNumber, shortenAddress } from "@/lib/utils";
+import { formatBigNumber } from "@/lib/utils";
 import config from "@/uiconfig.json";
 
-import TokenInfoLoading from "./TokenInfoLoading";
+import TokenInfoLoading from "@/app/components/TokenInfo/TokenInfoLoading";
 import { CHAINS } from "@/constants/chains";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 
 const TokenInfo = () => {
   const { contractAddress, chainId, project } = config;
@@ -51,17 +49,17 @@ const TokenInfo = () => {
           {item.isAddress ? (
             <div className="flex items-center gap-1">
               <button
-                  className="border-b border-current text-xs text-foreground hover:text-primary focus-visible:outline-none"
-                  onClick={() =>
-                    window.open(
-                      `${chainInfo?.explorer}/address/${item.value}`,
-                      "_blank",
-                    )
-                  }
-                >
-                  View on Explorer
-                  <Icons.externalLink className="ml-2 inline-block h-4 w-4" />
-                </button>
+                className="border-b border-current text-xs text-foreground hover:text-primary focus-visible:outline-none"
+                onClick={() =>
+                  window.open(
+                    `${chainInfo?.explorer}/address/${item.value}`,
+                    "_blank"
+                  )
+                }
+              >
+                View on Explorer
+                <Icons.externalLink className="ml-2 inline-block h-4 w-4" />
+              </button>
             </div>
           ) : (
             <p className="text-neutral-400 break-all text-xs">{item.value}</p>

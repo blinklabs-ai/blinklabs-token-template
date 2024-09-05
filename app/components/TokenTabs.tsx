@@ -1,10 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import HolderDistribution from "../(tabs)/HolderDistribution";
-import Price from "../(tabs)/Price";
-import SupplyDynamics from "../(tabs)/SupplyDynamics";
-import TokenDetails from "../(tabs)/TokenDetails";
-import Volume from "../(tabs)/Volume";
+import HolderDistribution from "@/app/(tabs)/HolderDistribution";
+import Price from "@/app/(tabs)/Price";
+import SupplyDynamics from "@/app/(tabs)/SupplyDynamics";
+import TokenDetails from "@/app/(tabs)/TokenDetails";
+import Volume from "@/app/(tabs)/Volume";
 
 const TokenTabs = () => {
   const tabs = [

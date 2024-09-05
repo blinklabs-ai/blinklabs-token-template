@@ -9,7 +9,7 @@ import { LINKS } from "@/constants/common";
 import useWallet from "@/hooks/wallet/useWallet";
 import config from "@/uiconfig.json";
 
-import { Button } from "./button";
+import { Button } from "@/components/ui/buttons/button";
 
 const ChainButton = () => {
   const [currentChainId, setCurrentChainId] = useState<number>(0);
