@@ -13,7 +13,7 @@ export const shortenAddress = (address: `0x${string}` | string) => {
 export const formatBigNumber = (
   value: undefined | string | number | bigint
 ) => {
-  if (!value) return 0;
+  if (!value) return "0";
   return new Intl.NumberFormat("en-US").format(Number(value));
 };
 

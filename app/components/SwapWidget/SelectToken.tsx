@@ -1,4 +1,5 @@
 import React from "react";
+import { Token } from "@/types";
 
 import {
   Select,
@@ -10,7 +11,7 @@ import {
 } from "@/components/ui/select";
 
 type Props = {
-  tokenList: string[];
+  tokenList: Token[];
 };
 
 export default function SelectToken({ tokenList }: Props) {
@@ -20,20 +21,20 @@ export default function SelectToken({ tokenList }: Props) {
         <div className="flex items-center gap-2 pr-2">
           <span className="w-3 h-3 rounded-full bg-white"></span>
           <SelectValue
-            placeholder="ETH"
+            placeholder={tokenList[0].name}
             className="font-bold text-white block"
           />
         </div>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {tokenList.map((token: string) => (
+          {tokenList.map((token: Token) => (
             <SelectItem
-              key={token}
-              value={token}
+              key={token.address}
+              value={token.address}
               className="font-bold cursor-pointer"
             >
-              {token}
+              {token.name}
             </SelectItem>
           ))}
         </SelectGroup>

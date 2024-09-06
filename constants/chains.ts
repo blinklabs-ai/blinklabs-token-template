@@ -15,6 +15,24 @@ export const CHAINS = {
     chainFamily: "evm",
     logoUrl:
       "https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628",
+    swapRouterContractAddress: "0x55D32fa7Da7290838347bc97cb7fAD4992672255",
+    swapTokens: [
+      {
+        name: "BNB",
+        address: "0x4200000000000000000000000000000000000006",
+        decimals: 18,
+      },
+      {
+        name: "USDC",
+        address: "",
+        decimals: 6,
+      },
+      {
+        name: "USDT",
+        address: "",
+        decimals: 6,
+      },
+    ],
   },
   80002: {
     id: 80002,
@@ -117,6 +135,7 @@ export const CHAINS = {
     chainFamily: "evm",
     logoUrl:
       "https://assets.coingecko.com/asset_platforms/images/131/small/base-network.png?1720533039",
+    swapRouterContractAddress: "0xFE6508f0015C778Bdcc1fB5465bA5ebE224C9912",
   },
   80084: {
     id: 80084,
@@ -168,6 +187,24 @@ export const CHAINS = {
     chainFamily: "evm",
     logoUrl:
       "https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970",
+    swapRouterContractAddress: "0xa8EEA7aa6620712524d18D742821848e55E773B5",
+    swapTokens: [
+      {
+        name: "BNB",
+        address: "0x4200000000000000000000000000000000000006",
+        decimals: 18,
+      },
+      {
+        name: "USDC",
+        address: "0x845E27B8A4ad1Fe3dc0b41b900dC8C1Bb45141C3",
+        decimals: 6,
+      },
+      {
+        name: "USDT",
+        address: "0xCF712f20c85421d00EAa1B6F6545AaEEb4492B75",
+        decimals: 6,
+      },
+    ],
   },
   97: {
     id: 97,
@@ -185,5 +222,23 @@ export const CHAINS = {
     chainFamily: "evm",
     logoUrl:
       "https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970",
+    swapRouterContractAddress: "0x9A082015c919AD0E47861e5Db9A1c7070E81A2C7",
+    swapTokens: [
+      {
+        name: "BNB",
+        address: "0x4200000000000000000000000000000000000006",
+        decimals: 18,
+      },
+      {
+        name: "USDC",
+        address: "",
+        decimals: 6,
+      },
+      {
+        name: "USDT",
+        address: "",
+        decimals: 6,
+      },
+    ],
   },
 };

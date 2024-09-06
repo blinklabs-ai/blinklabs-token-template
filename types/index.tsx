@@ -20,6 +20,12 @@ export type PromiseOrValue<T> = T | Promise<T>;
 
 export type Address = `0x${string}`;
 
+export type Token = {
+  name: string;
+  decimals: number;
+  address: Address;
+};
+
 export interface Nft {
   id: number;
   tokenId: number;
@@ -28,3 +34,22 @@ export interface Nft {
   fee: number;
   imgUrl: string;
 }
+
+export type Chain = {
+  id: number;
+  name: string;
+  network: string;
+  nativeCurrency: {
+    decimals: number;
+    name: string;
+    symbol: string;
+  };
+  rpc: string;
+  explorer: string;
+  type: string;
+  parentChain: string;
+  chainFamily: string;
+  logoUrl: string;
+  swapRouterContractAddress: Address;
+  swapTokens: Token[];
+};
