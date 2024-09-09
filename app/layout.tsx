@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";
-
 import clsx from "clsx";
 import localFont from "next/font/local";
 
 import { Providers } from "@/app/providers";
+import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 const satoshiFont = localFont({
   src: [
@@ -32,6 +32,7 @@ export default function RootLayout({
         <Providers>
           {/* <Header /> */}
           {children}
+          <Toaster />
         </Providers>
       </body>
     </html>

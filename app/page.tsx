@@ -122,7 +122,6 @@ const MintPage = () => {
                   <div className="sm:col-span-2 flex flex-col gap-3">
                     <h4 className="text-lg font-bold">{name}</h4>
                     <p className="text-sm line-clamp-4">{description}</p>
-                    <ButtonTray />
                   </div>
                   <div className="py-6 px-4 bg-neutral-800 rounded-lg">
                     <TokenInfo />

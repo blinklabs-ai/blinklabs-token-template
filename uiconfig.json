@@ -442,7 +442,7 @@
       "discord": "https://discord.gg/chillbatman"
     },
     "tokenSupply": "1000000000000000000000000",
-    "liquidityUrl": "https://pancakeswap.finance/swap?chain=opBNBTestnet&inputCurrency=tBNB&outputCurrency=0x94c9bd4595d4205e77ed832cdd41e1c6f8d70cc6"
+    "liquidityUrl": "https://pancakeswap.finance/swap?chain=opBNBTestnet&inputCurrency=tBNB&outputCurrency=0x8374a96217eea636128c316b877b70ae0f515222"
   },
   "styles": {
     "backgroundColor": "#f0f0f0",

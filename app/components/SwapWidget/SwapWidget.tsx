@@ -1,62 +1,95 @@
 import React, { useState } from "react";
-import * as z from "zod";
+import Link from "next/link";
+import { QueryKey, useQueryClient } from "@tanstack/react-query";
 import BigNumber from "bignumber.js";
 import { useForm } from "react-hook-form";
-import { useAccount, useReadContract, useWalletClient } from "wagmi";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  useAccount,
+  useReadContract,
+  useSwitchChain,
+  useWalletClient,
+} from "wagmi";
 import { Abi } from "viem";
-import { Token, Percent, TokenAmount, Fraction } from "@uniswap/sdk";
-import { cn, debounce, formatTokenAmount } from "@/lib/utils";
-import { Chain } from "@/types";
+import {
+  Percent,
+  TokenAmount,
+  Fraction,
+  Token as TokenObject,
+} from "@uniswap/sdk";
+import {
+  addChainAsync,
+  checkChainAsync,
+  cn,
+  debounce,
+  formatTokenAmount,
+} from "@/lib/utils";
+import { Chain, Token } from "@/types";
 import config from "@/uiconfig.json";
 import swapRouterContractAbi from "@/constants/abis/SwapRouterContract.json";
 import { CHAINS } from "@/constants/chains";
-import { SwapTokenSchema } from "@/lib/validations/token";
 import { readContract, waitForTransactionReceipt } from "viem/actions";
-import { QueryKey, useQueryClient } from "@tanstack/react-query";
 
 import SelectToken from "@/app/components/SwapWidget/SelectToken";
 import AmountInput from "@/components/AmountInput";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/buttons/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import Loading from "@/components/Loading";
+import { toast } from "@/components/ui/use-toast";
 
-type FormData = z.infer<typeof SwapTokenSchema>;
+const DEFAULT_SLIPPAGE_LIST = [
+  {
+    value: "0.0001",
+    label: "0.01%",
+    key: 0,
+  },
+  {
+    value: "0.0005",
+    label: "0.05%",
+    key: 1,
+  },
+  {
+    value: "0.001",
+    label: "0.1%",
+    key: 2,
+  },
+];
 
 const SwapWidget = () => {
-  const DEFAULT_SLIPPAGE_LIST = [
-    {
-      value: "0.0001",
-      label: "0.01%",
-      key: 0,
-    },
-    {
-      value: "0.0005",
-      label: "0.05%",
-      key: 1,
-    },
-    {
-      value: "0.001",
-      label: "0.1%",
-      key: 2,
-    },
-  ];
   const { chainId, project, contractAddress, abi } = config;
   const chain = CHAINS[chainId as keyof typeof CHAINS] as Chain;
-  const form = useForm<FormData>({
-    resolver: zodResolver(SwapTokenSchema),
+  const isLiquidityUrlAvailable =
+    project?.liquidityUrl && project.liquidityUrl.trim() !== "";
+
+  const form = useForm({
     defaultValues: {
-      inToken: chain.swap.pancake.swapTokens[0].address,
+      inToken: JSON.stringify(chain.swap.pancake.swapTokens[0]),
       amount: "",
       slippage: DEFAULT_SLIPPAGE_LIST[0].value,
       isCustomSlippage: false,
     },
+    mode: "onChange",
   });
+
+  const [isLoading, setLoading] = useState(false);
+  const [isViewingSlippage, setIsViewSlippage] = useState(false);
+  const [customSlippage, setCustomSlippage] = useState("");
+
   const swapRouterContractAddress = chain.swap.pancake.routerContractAddress;
   const queryClient = useQueryClient();
   const { data: walletClient } = useWalletClient();
   const { address } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
+
+  const watchInToken = form.watch("inToken");
+  const currentInToken: Token = JSON.parse(watchInToken);
+
   const { data: decimals } = useReadContract({
     chainId,
     address: contractAddress as `0x${string}`,
@@ -64,13 +97,16 @@ const SwapWidget = () => {
     abi: config.abi,
     args: [],
   }) as { data: number };
+
   const { data: tokenInBalance, queryKey: tokenInQueryKey } = useReadContract({
     chainId,
-    address: "0x4200000000000000000000000000000000000006" as `0x${string}`,
+    address: currentInToken.address as `0x${string}`,
     functionName: "balanceOf",
     abi: config.abi,
     args: [address],
+    query: { enabled: !!currentInToken.address },
   }) as { data: BigInt; queryKey: QueryKey };
+
   const { data: tokenOutBalance, queryKey: tokenOutQueryKey } = useReadContract(
     {
       chainId,
@@ -80,22 +116,20 @@ const SwapWidget = () => {
       args: [address],
     }
   ) as { data: BigInt; queryKey: QueryKey };
-  const { data: amountOuts } = useReadContract({
+
+  const { data: amountOuts, queryKey: amountOutQueryKey } = useReadContract({
     chainId,
     address: swapRouterContractAddress as `0x${string}`,
     functionName: "getAmountsOut",
     abi: swapRouterContractAbi,
     args: [
       BigNumber(form.watch("amount"))
-        .times(10 ** ((decimals as number) || 18))
+        .times(BigNumber(10).pow(decimals))
         .toString(10),
-      ["0x4200000000000000000000000000000000000006", contractAddress],
+      [currentInToken.address as `0x${string}`, contractAddress],
     ],
-  }) as { data: Array<any>; error: any };
-
-  const [isLoading, setLoading] = useState(false);
-  const [isViewingSlippage, setIsViewSlippage] = useState(false);
-  const [customSlippage, setCustomSlippage] = useState("");
+    query: { enabled: !!currentInToken.address && !!decimals },
+  }) as { data: Array<BigInt>; queryKey: QueryKey };
 
   const onToggleSlippageView = () => setIsViewSlippage((prev) => !prev);
 
@@ -136,18 +170,35 @@ const SwapWidget = () => {
         throw new Error("Please connect your wallet");
       }
       setLoading(true);
-      const tokenInAddress = "0x4200000000000000000000000000000000000006";
+      const currentChainId = await window.ethereum.request({
+        method: "eth_chainId",
+      });
+      if (currentChainId !== chainId) {
+        const hasChainInWallet = await checkChainAsync(chainId);
+        if (!hasChainInWallet) {
+          await addChainAsync(chain);
+        }
+        await switchChainAsync({ chainId });
+      }
+      const values = form.getValues();
+      const selectedToken: Token = JSON.parse(values.inToken);
+
+      const tokenInAddress = selectedToken.address as `0x${string}`;
       const tokenOutAddress = contractAddress;
-      const tokenInDecimals = 18;
+      const tokenInDecimals = selectedToken.decimals;
       const tokenOutDecimals = decimals as number;
       const tokenAmount = BigNumber(form.getValues("amount")).times(
-        10 ** tokenInDecimals
+        BigNumber(10).pow(tokenInDecimals)
       );
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
       const amountIn = tokenAmount.toString(10);
       const to = address;
       const path = [tokenInAddress, tokenOutAddress];
-      const tokenOut = new Token(chainId, tokenOutAddress, tokenOutDecimals);
+      const tokenOut = new TokenObject(
+        chainId,
+        tokenOutAddress,
+        tokenOutDecimals
+      );
       const slippage = (Number(form.watch("slippage")) * 10000).toString(10);
       const slippageTolerance = new Percent(slippage, "10000");
       const amountOut = new TokenAmount(tokenOut, amountOuts[1].toString(10));
@@ -160,7 +211,7 @@ const SwapWidget = () => {
           { groupSeparator: "" },
           0
         );
-      const amountOutMin = BigNumber(10 ** tokenOutDecimals)
+      const amountOutMin = BigNumber(BigNumber(10).pow(tokenOutDecimals))
         .times(slippageAdjustedAmountOut)
         .toString(10);
       const approvalHash = await walletClient.writeContract({
@@ -188,11 +239,27 @@ const SwapWidget = () => {
         args: [amountIn, amountOutMin, path, to, deadline],
       });
       await waitForTransactionReceipt(walletClient, { hash });
-      await queryClient.invalidateQueries({
-        queryKey: [tokenOutQueryKey, tokenInQueryKey],
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: tokenInQueryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: tokenOutQueryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: amountOutQueryKey,
+        }),
+      ]);
+
+      toast({
+        title: "Swap successfully",
       });
     } catch (error) {
-      console.log({ error });
+      console.error({ error });
+      toast({
+        title: "Swap failed. Please try again",
+      });
     } finally {
       form.reset();
       setLoading(false);
@@ -223,7 +290,7 @@ const SwapWidget = () => {
               <div className="bg-neutral-800 p-2 rounded-md">
                 <p className="mb-4">Set Max Slippage:</p>
                 <div className="flex">
-                  <div className="w-3/4 flex flex-1">
+                  <div className="w-[67%] flex flex-1">
                     {DEFAULT_SLIPPAGE_LIST.map(
                       (slippage: {
                         value: string;
@@ -234,7 +301,8 @@ const SwapWidget = () => {
                           key={slippage.key}
                           className={cn(
                             "w-1/3 p-2 cursor-pointer rounded-lg border-2 flex justify-center",
-                            form.watch("slippage") === slippage.value
+                            form.watch("slippage") === slippage.value &&
+                              !form.watch("isCustomSlippage")
                               ? "border-primary"
                               : "border-transparent"
                           )}
@@ -247,7 +315,7 @@ const SwapWidget = () => {
                   </div>
                   <div
                     className={cn(
-                      "w-1/4 border-2 rounded-md",
+                      "w-[33%] border-2 rounded-md",
                       form.watch("isCustomSlippage")
                         ? "border-primary"
                         : "border-transparent"
@@ -256,7 +324,7 @@ const SwapWidget = () => {
                     <AmountInput
                       value={customSlippage}
                       onChange={(e) => setCustomSlippage(e.target.value)}
-                      placeholder="Custom"
+                      placeholder="Custom..."
                       className="bg-neutral-800 text-base text-center focus-visible:ring-offset-0 focus-visible:ring-0"
                     />
                   </div>
@@ -294,10 +362,11 @@ const SwapWidget = () => {
                     name="amount"
                     rules={{
                       validate: (value) => {
-                        if (!tokenInBalance) return "Failed to get token data";
+                        if (!tokenInBalance || !decimals)
+                          return "Failed to get token data";
                         if (
                           BigNumber(value)
-                            .times(10 ** (decimals as number))
+                            .times(BigNumber(10).pow(decimals))
                             .gte(tokenInBalance.toString(10))
                         ) {
                           return "Insufficient balance";
@@ -317,17 +386,31 @@ const SwapWidget = () => {
                                 await queryClient.invalidateQueries({
                                   queryKey: [tokenInQueryKey],
                                 });
-                              }, 500);
+                              }, 2000);
                               field.onChange(e);
                             }}
                           />
                         </FormControl>
-                        {/* <FormMessage /> */}
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
                   <div>
-                    <SelectToken tokenList={chain.swap.pancake.swapTokens} />
+                    <FormField
+                      control={form.control}
+                      name="inToken"
+                      render={({ field: { value, onChange } }) => (
+                        <FormItem>
+                          <FormControl>
+                            <SelectToken
+                              tokenList={chain.swap.pancake.swapTokens}
+                              value={value}
+                              onValueChange={onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
 
@@ -355,7 +438,7 @@ const SwapWidget = () => {
                             decimals
                           )
                         : "0"}{" "}
-                      {chain.nativeCurrency.symbol}
+                      {currentInToken.name}
                     </span>
                     <Button
                       className="text-neutral-200 text-xs rounded-full bg-neutral-700 hover:bg-neutral-600 h-6 px-2"
@@ -378,9 +461,10 @@ const SwapWidget = () => {
                   size="icon"
                   className="w-8 h-8 rounded-full bg-primary shadow-sm hover:bg-primary hover:opacity-95"
                   onClick={onSubmit}
+                  disabled={isLoading}
                 >
                   {isLoading ? (
-                    <Loading width={16} height={16} className="border-white" />
+                    <Loading className="fill-white" />
                   ) : (
                     <Icons.arrowDownUp
                       size={20}
@@ -431,8 +515,18 @@ const SwapWidget = () => {
         )}
       </div>
       <div className="flex justify-end mt-2">
-        <Button className="font-bold px-10" variant={"default"}>
-          View on Uniswap
+        <Button
+          className="font-bold"
+          variant={"default"}
+          disabled={!isLiquidityUrlAvailable}
+        >
+          {isLiquidityUrlAvailable ? (
+            <Link href={project.liquidityUrl} target="_blank">
+              View on PancakeSwap
+            </Link>
+          ) : (
+            "Liquidity not supplied"
+          )}
         </Button>
       </div>
     </Form>

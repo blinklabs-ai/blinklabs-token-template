@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Chain } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,4 +42,38 @@ export const debounce = <T extends (...args: any[]) => any>(
       func.apply(this, args);
     }, timeout);
   };
+};
+
+export const checkChainAsync = async (chainId: number) => {
+  if (typeof window.ethereum !== "undefined") {
+    try {
+      const chainIds = await window.ethereum.request({ method: "eth_chainId" });
+      return chainIds.includes(chainId);
+    } catch (error) {
+      console.error("Error checking chain in MetaMask:", error);
+      return false;
+    }
+  } else {
+    console.error("MetaMask is not installed");
+    return false;
+  }
+};
+
+export const addChainAsync = async (chain: Chain) => {
+  try {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: `0x${chain.id.toString(16)}`,
+          chainName: chain.name,
+          nativeCurrency: chain.nativeCurrency,
+          rpcUrls: [chain.rpc],
+          blockExplorerUrls: [chain.explorer],
+        },
+      ],
+    });
+  } catch (error) {
+    console.error("Error adding chain to MetaMask:", error);
+  }
 };
