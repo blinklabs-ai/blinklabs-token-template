@@ -1,0 +1,167 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      { "name": "_feeToSetter", "type": "address", "internalType": "address" }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "PairCreated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "token0",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "token1",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "pair",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false,
+    "signature": "0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9"
+  },
+  {
+    "name": "INIT_CODE_PAIR_HASH",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "value": "0xa5934690703a592a07e841ca29d5e5c79b5e22ed4749057bb216dc31100be1c0",
+        "internalType": "bytes32"
+      }
+    ],
+    "payable": false,
+    "constant": true,
+    "signature": "0x5855a25a",
+    "stateMutability": "view"
+  },
+  {
+    "name": "allPairs",
+    "type": "function",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "payable": false,
+    "constant": true,
+    "signature": "0x1e3dd18b",
+    "stateMutability": "view"
+  },
+  {
+    "name": "allPairsLength",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "uint256", "value": "0", "internalType": "uint256" }
+    ],
+    "payable": false,
+    "constant": true,
+    "signature": "0x574f2ba3",
+    "stateMutability": "view"
+  },
+  {
+    "name": "createPair",
+    "type": "function",
+    "inputs": [
+      { "name": "tokenA", "type": "address", "internalType": "address" },
+      { "name": "tokenB", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      { "name": "pair", "type": "address", "internalType": "address" }
+    ],
+    "payable": false,
+    "constant": false,
+    "signature": "0xc9c65396",
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "feeTo",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "value": "0x0000000000000000000000000000000000000000",
+        "internalType": "address"
+      }
+    ],
+    "payable": false,
+    "constant": true,
+    "signature": "0x017e7e58",
+    "stateMutability": "view"
+  },
+  {
+    "name": "feeToSetter",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "value": "0x760DFbb79F20DE1E472957Ea085f009C115e1F27",
+        "internalType": "address"
+      }
+    ],
+    "payable": false,
+    "constant": true,
+    "signature": "0x094b7415",
+    "stateMutability": "view"
+  },
+  {
+    "name": "getPair",
+    "type": "function",
+    "inputs": [
+      { "name": "", "type": "address", "internalType": "address" },
+      { "name": "", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "payable": false,
+    "constant": true,
+    "signature": "0xe6a43905",
+    "stateMutability": "view"
+  },
+  {
+    "name": "setFeeTo",
+    "type": "function",
+    "inputs": [
+      { "name": "_feeTo", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "payable": false,
+    "constant": false,
+    "signature": "0xf46901ed",
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setFeeToSetter",
+    "type": "function",
+    "inputs": [
+      { "name": "_feeToSetter", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "payable": false,
+    "constant": false,
+    "signature": "0xa2e74af6",
+    "stateMutability": "nonpayable"
+  }
+]

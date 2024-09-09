@@ -50,6 +50,10 @@ export type Chain = {
   parentChain: string;
   chainFamily: string;
   logoUrl: string;
-  swapRouterContractAddress: Address;
-  swapTokens: Token[];
+  swap: {
+    pancake: {
+      routerContractAddress: Address;
+      swapTokens: Token[];
+    };
+  };
 };

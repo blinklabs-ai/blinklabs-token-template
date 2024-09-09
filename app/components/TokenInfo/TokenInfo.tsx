@@ -3,7 +3,7 @@
 import BigNumber from "bignumber.js";
 
 import useToken from "@/hooks/token/useToken";
-import { formatBigNumber } from "@/lib/utils";
+import { formatTokenAmount } from "@/lib/utils";
 import config from "@/uiconfig.json";
 
 import TokenInfoLoading from "@/app/components/TokenInfo/TokenInfoLoading";
@@ -24,11 +24,7 @@ const TokenInfo = () => {
     { label: "Ticker", value: project?.symbol || symbol },
     {
       label: "Token Supply",
-      value: formatBigNumber(
-        BigNumber(tokenSupply)
-          .dividedBy(BigNumber(10).exponentiatedBy(18))
-          .toString(10)
-      ),
+      value: formatTokenAmount(BigNumber(tokenSupply), decimals),
     },
     {
       label: "Network",

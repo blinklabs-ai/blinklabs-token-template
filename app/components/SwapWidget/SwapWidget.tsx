@@ -2,25 +2,18 @@ import React, { useState } from "react";
 import * as z from "zod";
 import BigNumber from "bignumber.js";
 import { useForm } from "react-hook-form";
-import { useAccount, useBalance, useReadContract } from "wagmi";
+import { useAccount, useReadContract, useWalletClient } from "wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Abi, createWalletClient, custom } from "viem";
-import {
-  Token,
-  Fetcher,
-  Route,
-  Trade,
-  TokenAmount,
-  TradeType,
-  Percent,
-} from "@uniswap/sdk";
-import { cn } from "@/lib/utils";
+import { Abi } from "viem";
+import { Token, Percent, TokenAmount, Fraction } from "@uniswap/sdk";
+import { cn, debounce, formatTokenAmount } from "@/lib/utils";
 import { Chain } from "@/types";
 import config from "@/uiconfig.json";
 import swapRouterContractAbi from "@/constants/abis/SwapRouterContract.json";
 import { CHAINS } from "@/constants/chains";
 import { SwapTokenSchema } from "@/lib/validations/token";
-import { waitForTransactionReceipt } from "viem/actions";
+import { readContract, waitForTransactionReceipt } from "viem/actions";
+import { QueryKey, useQueryClient } from "@tanstack/react-query";
 
 import SelectToken from "@/app/components/SwapWidget/SelectToken";
 import AmountInput from "@/components/AmountInput";
@@ -49,36 +42,60 @@ const SwapWidget = () => {
       key: 2,
     },
   ];
-  const { chainId, project, contractAddress } = config;
+  const { chainId, project, contractAddress, abi } = config;
   const chain = CHAINS[chainId as keyof typeof CHAINS] as Chain;
-  const swapRouterContractAddress = chain.swapRouterContractAddress;
-  const { address } = useAccount();
-  const { data: balanceData, isSuccess } = useBalance({ address });
-  const { data: decimals } = useReadContract({
-    address: contractAddress as `0x${string}`,
-    functionName: "decimals",
-    args: [],
-  });
-
-  const [isLoading, setLoading] = useState(false);
-  const [isViewingSlippage, setIsViewSlippage] = useState(false);
-  const [customSlippage, setCustomSlippage] = useState("");
-
-  const balance = isSuccess
-    ? BigNumber(balanceData.value.toString(10))
-        .div(1e18)
-        .toFixed(6, BigNumber.ROUND_DOWN)
-    : "0";
-
   const form = useForm<FormData>({
     resolver: zodResolver(SwapTokenSchema),
     defaultValues: {
-      inToken: chain.swapTokens[0].address,
+      inToken: chain.swap.pancake.swapTokens[0].address,
       amount: "",
       slippage: DEFAULT_SLIPPAGE_LIST[0].value,
       isCustomSlippage: false,
     },
   });
+  const swapRouterContractAddress = chain.swap.pancake.routerContractAddress;
+  const queryClient = useQueryClient();
+  const { data: walletClient } = useWalletClient();
+  const { address } = useAccount();
+  const { data: decimals } = useReadContract({
+    chainId,
+    address: contractAddress as `0x${string}`,
+    functionName: "decimals",
+    abi: config.abi,
+    args: [],
+  }) as { data: number };
+  const { data: tokenInBalance, queryKey: tokenInQueryKey } = useReadContract({
+    chainId,
+    address: "0x4200000000000000000000000000000000000006" as `0x${string}`,
+    functionName: "balanceOf",
+    abi: config.abi,
+    args: [address],
+  }) as { data: BigInt; queryKey: QueryKey };
+  const { data: tokenOutBalance, queryKey: tokenOutQueryKey } = useReadContract(
+    {
+      chainId,
+      address: contractAddress as `0x${string}`,
+      functionName: "balanceOf",
+      abi: config.abi,
+      args: [address],
+    }
+  ) as { data: BigInt; queryKey: QueryKey };
+  const { data: amountOuts } = useReadContract({
+    chainId,
+    address: swapRouterContractAddress as `0x${string}`,
+    functionName: "getAmountsOut",
+    abi: swapRouterContractAbi,
+    args: [
+      BigNumber(form.watch("amount"))
+        .times(10 ** ((decimals as number) || 18))
+        .toString(10),
+      ["0x4200000000000000000000000000000000000006", contractAddress],
+    ],
+  }) as { data: Array<any>; error: any };
+
+  const [isLoading, setLoading] = useState(false);
+  const [isViewingSlippage, setIsViewSlippage] = useState(false);
+  const [customSlippage, setCustomSlippage] = useState("");
 
   const onToggleSlippageView = () => setIsViewSlippage((prev) => !prev);
 
@@ -90,66 +107,94 @@ const SwapWidget = () => {
     }
   };
 
-  const onSetHalfBalance = () =>
+  const onSetHalfBalance = () => {
+    const tokenInBalanceBn = BigNumber(tokenInBalance.toString(10));
     form.setValue(
       "amount",
-      balance === "0"
+      tokenInBalanceBn.eq(0)
         ? "0"
-        : BigNumber(balance).div(2).toFixed(6, BigNumber.ROUND_DOWN)
+        : formatTokenAmount(tokenInBalanceBn.div(2), decimals)
     );
+  };
 
-  const onSetMaxBalance = () =>
-    form.setValue("amount", balance === "0" ? "0" : balance);
+  const onSetMaxBalance = () => {
+    const tokenInBalanceBn = BigNumber(tokenInBalance.toString(10));
+    form.setValue(
+      "amount",
+      tokenInBalanceBn.eq(0)
+        ? "0"
+        : formatTokenAmount(tokenInBalanceBn, decimals)
+    );
+  };
 
   const onSubmit = async () => {
-    // TODO: Implement swap logic
     try {
       if (!swapRouterContractAddress) {
         throw new Error("This network does not supported for swapping");
       }
-      if (!address) {
+      if (!walletClient || !address) {
         throw new Error("Please connect your wallet");
       }
       setLoading(true);
-      const client = createWalletClient({
-        chain: { ...chain, rpcUrls: { default: { http: [chain.rpc] } } },
-        transport: custom(window.ethereum!),
-      });
-      const tokenAmount = form.getValues("amount");
       const tokenInAddress = "0x4200000000000000000000000000000000000006";
       const tokenOutAddress = contractAddress;
       const tokenInDecimals = 18;
       const tokenOutDecimals = decimals as number;
+      const tokenAmount = BigNumber(form.getValues("amount")).times(
+        10 ** tokenInDecimals
+      );
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
-      const amountIn = BigNumber(tokenAmount)
-        .times(10 ** tokenInDecimals)
-        .toString(10);
+      const amountIn = tokenAmount.toString(10);
       const to = address;
       const path = [tokenInAddress, tokenOutAddress];
-      const tokenIn = new Token(chainId, tokenInAddress, tokenInDecimals);
-      const tokenOut = new Token(chainId, contractAddress, tokenOutDecimals);
-      const pair = await Fetcher.fetchPairData(tokenIn, tokenOut);
-      const route = new Route([pair], tokenIn);
-      const trade = new Trade(
-        route,
-        new TokenAmount(tokenIn, amountIn),
-        TradeType.EXACT_INPUT
-      );
-      const slippage = form.getValues("slippage");
+      const tokenOut = new Token(chainId, tokenOutAddress, tokenOutDecimals);
+      const slippage = (Number(form.watch("slippage")) * 10000).toString(10);
       const slippageTolerance = new Percent(slippage, "10000");
-      const amountOutMin = trade.minimumAmountOut(slippageTolerance).toFixed();
-      const hash = await client.writeContract({
+      const amountOut = new TokenAmount(tokenOut, amountOuts[1].toString(10));
+      const slippageAdjustedAmountOut = new Fraction("1")
+        .add(slippageTolerance)
+        .invert()
+        .multiply(amountOut.quotient)
+        .toFixed(
+          Math.abs(Math.log10(Number(form.watch("slippage")))),
+          { groupSeparator: "" },
+          0
+        );
+      const amountOutMin = BigNumber(10 ** tokenOutDecimals)
+        .times(slippageAdjustedAmountOut)
+        .toString(10);
+      const approvalHash = await walletClient.writeContract({
+        address: tokenInAddress,
+        abi,
+        functionName: "approve",
+        account: address,
+        args: [swapRouterContractAddress, amountIn],
+      });
+      await waitForTransactionReceipt(walletClient, { hash: approvalHash });
+      const allowance = (await readContract(walletClient, {
+        address: tokenInAddress,
+        abi,
+        functionName: "allowance",
+        args: [address, swapRouterContractAddress],
+      })) as BigInt;
+      if (BigNumber(allowance.toString(10)).lt(amountIn)) {
+        throw new Error("Insufficient allowance");
+      }
+      const hash = await walletClient.writeContract({
         account: address,
         abi: swapRouterContractAbi as Abi,
         functionName: "swapExactTokensForTokens",
         address: swapRouterContractAddress,
         args: [amountIn, amountOutMin, path, to, deadline],
       });
-
-      await waitForTransactionReceipt(client, { hash });
+      await waitForTransactionReceipt(walletClient, { hash });
+      await queryClient.invalidateQueries({
+        queryKey: [tokenOutQueryKey, tokenInQueryKey],
+      });
     } catch (error) {
       console.log({ error });
     } finally {
+      form.reset();
       setLoading(false);
     }
   };
@@ -249,11 +294,11 @@ const SwapWidget = () => {
                     name="amount"
                     rules={{
                       validate: (value) => {
-                        if (!balanceData) return "Failed to get token data";
+                        if (!tokenInBalance) return "Failed to get token data";
                         if (
                           BigNumber(value)
-                            .times(10 ** balanceData.decimals)
-                            .gte(balanceData.value.toString(10))
+                            .times(10 ** (decimals as number))
+                            .gte(tokenInBalance.toString(10))
                         ) {
                           return "Insufficient balance";
                         }
@@ -267,6 +312,14 @@ const SwapWidget = () => {
                             {...field}
                             className="bg-transparent text-xl text-neutral-500 p-0 focus-visible:ring-offset-0 focus-visible:ring-0"
                             placeholder="0"
+                            onChange={(e) => {
+                              debounce(async () => {
+                                await queryClient.invalidateQueries({
+                                  queryKey: [tokenInQueryKey],
+                                });
+                              }, 500);
+                              field.onChange(e);
+                            }}
                           />
                         </FormControl>
                         {/* <FormMessage /> */}
@@ -274,7 +327,7 @@ const SwapWidget = () => {
                     )}
                   />
                   <div>
-                    <SelectToken tokenList={chain.swapTokens} />
+                    <SelectToken tokenList={chain.swap.pancake.swapTokens} />
                   </div>
                 </div>
 
@@ -296,7 +349,13 @@ const SwapWidget = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-neutral-500 font-medium">
-                      {balance} {chain.nativeCurrency.symbol}
+                      {tokenInBalance
+                        ? formatTokenAmount(
+                            BigNumber(tokenInBalance.toString(10)),
+                            decimals
+                          )
+                        : "0"}{" "}
+                      {chain.nativeCurrency.symbol}
                     </span>
                     <Button
                       className="text-neutral-200 text-xs rounded-full bg-neutral-700 hover:bg-neutral-600 h-6 px-2"
@@ -321,7 +380,7 @@ const SwapWidget = () => {
                   onClick={onSubmit}
                 >
                   {isLoading ? (
-                    <Loading width={16} height={16} />
+                    <Loading width={16} height={16} className="border-white" />
                   ) : (
                     <Icons.arrowDownUp
                       size={20}
@@ -334,7 +393,14 @@ const SwapWidget = () => {
               <div className="bg-neutral-800 p-3 pb-6 rounded-lg">
                 <p className="text-base text-neutral-400 mb-4">You Receive</p>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="font-bold text-neutral-500 text-xl">0</span>
+                  <span className="font-bold text-neutral-500 text-xl">
+                    {amountOuts
+                      ? formatTokenAmount(
+                          BigNumber(amountOuts[1].toString(10)),
+                          decimals
+                        )
+                      : "0"}
+                  </span>
                   <div>
                     <div className="rounded-full bg-neutral-700 py-1 px-2 h-7">
                       <div className="flex items-center gap-2">
@@ -350,7 +416,13 @@ const SwapWidget = () => {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-neutral-500">$0</span>
                   <span className="text-neutral-500 font-medium">
-                    30.234 USDC
+                    {tokenOutBalance
+                      ? formatTokenAmount(
+                          BigNumber(tokenOutBalance.toString(10)),
+                          decimals
+                        )
+                      : "0"}{" "}
+                    {project.symbol}
                   </span>
                 </div>
               </div>
